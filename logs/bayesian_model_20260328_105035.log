@@ -1,0 +1,473 @@
+2026-03-28 10:50:35 | DEBUG | Logger initialized — level: DEBUG, file: logs/bayesian_model_20260328_105035.log
+2026-03-28 10:50:35 | DEBUG | Running get merged data dir: data/
+2026-03-28 10:50:35 | DEBUG | Running get_app_data dir: data/
+2026-03-28 10:50:38 | DEBUG | IncomeBracket distribution:
+IncomeBracket
+Medium    125959
+Low       121651
+High      108645
+2026-03-28 10:50:38 | DEBUG | LoanOutcome distribution:
+LoanOutcome
+Repaid       282686
+Defaulted     73569
+2026-03-28 10:50:38 | DEBUG | ExtSource1Risk distribution:
+ExtSource1Risk
+NaN         193910
+Medium       36561
+MedHigh      35702
+Low          32866
+High         29903
+VeryHigh     14066
+VeryLow      13247
+2026-03-28 10:50:38 | DEBUG | ExtSource2Risk distribution:
+ExtSource2Risk
+Medium      118303
+Low         101191
+MedHigh      61825
+High         42186
+VeryHigh     31400
+VeryLow        682
+NaN            668
+2026-03-28 10:50:38 | DEBUG | ExtSource3Risk distribution:
+ExtSource3Risk
+Medium      79047
+Low         70415
+NaN         69633
+MedHigh     62387
+High        41787
+VeryHigh    22651
+VeryLow     10335
+2026-03-28 10:50:38 | DEBUG | AmtCredit distribution:
+AmtCredit
+High       149475
+MedLow      80397
+MedHigh     71349
+Med         20703
+VeryLow     18421
+Low         15910
+2026-03-28 10:50:38 | DEBUG | AmtGoodsPrice distribution:
+AmtGoodsPrice
+VeryLow     88132
+Medium      81641
+VeryHigh    70442
+MedHigh     69809
+High        35981
+Low          9972
+NaN           278
+2026-03-28 10:50:38 | DEBUG | AmtReqCreditBureauMon distribution:
+AmtReqCreditBureauMon
+NaN        312142
+Medium      33471
+VeryLow     10642
+2026-03-28 10:50:38 | DEBUG | Running generate_bureau_summary dir: data/
+2026-03-28 10:50:59 | DEBUG | Running generate_install_summary dir: data/
+2026-03-28 10:52:12 | DEBUG | Running generate_util_summary dir: data/
+2026-03-28 10:52:17 | DEBUG | Running generate_pos_summary dir: data/
+2026-03-28 10:52:45 | DEBUG | Running generate_prev_summary dir: data/
+2026-03-28 10:53:33 | DEBUG | get_graph_summary: starting graph analytics pipeline
+2026-03-28 10:53:33 | DEBUG | build_graph: constructing customer relationship graph
+2026-03-28 10:53:43 | DEBUG | build_graph: added organization edges for 58 org types
+2026-03-28 10:53:44 | DEBUG | build_graph: added region edges for 5 region bins
+2026-03-28 10:53:45 | DEBUG | build_graph: added occupation edges for 18 occupation types
+2026-03-28 10:53:45 | DEBUG | build_graph: graph complete — 356336 nodes, 956769 edges, 356255 customer nodes
+2026-03-28 10:53:45 | DEBUG | compute_graph_features: computing per-customer graph features
+2026-03-28 10:53:47 | DEBUG | compute_graph_features: completed — 356255 customer records
+2026-03-28 10:53:47 | DEBUG | graph feature 'customer_degree' by LoanOutcome:
+                count      mean       std  min  25%  50%  75%  max
+LoanOutcome                                                       
+Defaulted     24825.0  2.747110  0.434677  2.0  2.0  3.0  3.0  3.0
+Repaid       282686.0  2.681226  0.466002  2.0  2.0  3.0  3.0  3.0
+2026-03-28 10:53:47 | DEBUG | graph feature 'neighbor_default_rate' by LoanOutcome:
+             count  mean  std  min  25%  50%  75%  max
+LoanOutcome                                           
+Defaulted      0.0   NaN  NaN  NaN  NaN  NaN  NaN  NaN
+Repaid         0.0   NaN  NaN  NaN  NaN  NaN  NaN  NaN
+2026-03-28 10:53:47 | DEBUG | graph feature 'org_default_rate' by LoanOutcome:
+                count      mean       std      min       25%       50%       75%      max
+LoanOutcome                                                                              
+Defaulted     24825.0  0.085539  0.019156  0.03125  0.070000  0.092996  0.101739  0.15754
+Repaid       282686.0  0.080306  0.019698  0.03125  0.059148  0.085284  0.092996  0.15754
+2026-03-28 10:53:47 | DEBUG | graph feature 'region_default_rate' by LoanOutcome:
+                count      mean       std       min       25%       50%       75%       max
+LoanOutcome                                                                                
+Defaulted     24825.0  0.082488  0.011328  0.059962  0.077267  0.079221  0.089447  0.095466
+Repaid       282686.0  0.080574  0.011954  0.059962  0.077267  0.079221  0.089447  0.095466
+2026-03-28 10:53:48 | DEBUG | graph feature plot saved: logs/graph_features_20260328_105348.png
+2026-03-28 10:53:48 | DEBUG | bin_graph_features: binned graph features
+NeighborRisk  OrgRisk  RegionRisk  CustomerHub
+Unknown       Low      Low         Medium         242919
+                                   Low            111975
+              Medium   Low         Medium           1340
+                                   Low                21
+              Low      Low         High                0
+                                   Unknown             0
+                       Medium      Medium              0
+                                   Low                 0
+                                   High                0
+                                   Unknown             0
+2026-03-28 10:53:48 | DEBUG | get_graph_summary: complete
+2026-03-28 10:53:49 | DEBUG | merged df dtypes:
+IncomeType               object
+OccupationType           object
+IncomeBracket            object
+LoanOutcome              object
+ExtSource1Risk           object
+ExtSource2Risk           object
+ExtSource3Risk           object
+AmtCredit                object
+AmtGoodsPrice            object
+AmtReqCreditBureauMon    object
+PaymentHistory           object
+PriorLoanApproved        object
+PrevRejected             object
+CreditUtilization        object
+DPD                      object
+ContractStatus           object
+DaysOverdue              object
+MaxOverdue               object
+DebtLoad                 object
+CreditProlonged          object
+ActiveCredits            object
+NeighborRisk             object
+OrgRisk                  object
+RegionRisk               object
+CustomerHub              object
+dtype: object
+2026-03-28 10:53:49 | DEBUG | merged df shape:
+(356255, 25)
+2026-03-28 10:53:49 | DEBUG | install_summary numeric cols by LoanOutcome:
+            on_time_rate                                                        total_fills                                                    
+                   count      mean       std  min       25%       50%  75%  max       count       mean        std  min   25%   50%   75%    max
+LoanOutcome                                                                                                                                    
+Defaulted        71820.0  0.921509  0.117823  0.0  0.884615  0.976190  1.0  1.0     71820.0  40.296046  41.608588  1.0  12.0  25.0  52.0  336.0
+Repaid          267767.0  0.926462  0.113891  0.0  0.892857  0.983607  1.0  1.0    267767.0  40.002461  40.902990  1.0  12.0  25.0  51.0  372.0
+2026-03-28 10:53:49 | DEBUG | util_summary numeric cols by LoanOutcome:
+            avg_utilization                                                                 max_utilization                                                            
+                      count     mean       std       min  25%       50%       75%       max           count      mean       std  min  25%       50%       75%       max
+LoanOutcome                                                                                                                                                            
+Defaulted           24187.0  0.31702  0.335333 -0.058333  0.0  0.198784  0.598620  1.398834         24187.0  0.631584  0.481755  0.0  0.0  0.953923  1.044763   2.86418
+Repaid              79371.0  0.28615  0.314616 -0.065116  0.0  0.166524  0.519791  2.138790         79371.0  0.610743  0.485328  0.0  0.0  0.923634  1.042524  11.77751
+2026-03-28 10:53:49 | DEBUG | pos_summary numeric cols by LoanOutcome:
+            active_contracts                                                       max_dpd                                                    max_dpd_def                                                 
+                       count       mean        std  min   25%   50%   75%    max     count       mean         std  min  25%  50%  75%     max       count      mean        std  min  25%  50%  75%     max
+LoanOutcome                                                                                                                                                                                               
+Defaulted            71429.0  26.692380  23.216783  0.0  11.0  19.0  35.0  230.0   71429.0  14.601702  150.158062  0.0  0.0  0.0  0.0  4108.0     71429.0  1.815509  43.395296  0.0  0.0  0.0  0.0  3595.0
+Repaid              265823.0  27.253131  22.592099  0.0  11.0  21.0  36.0  271.0  265823.0  15.480162  151.660588  0.0  0.0  0.0  0.0  4231.0    265823.0  1.381415  28.646712  0.0  0.0  0.0  0.0  3373.0
+2026-03-28 10:53:49 | DEBUG | bureau_summary numeric cols by LoanOutcome:
+            active_credits                                               max_days_overdue                                                  max_overdue_amt                                                                    total_debt                                                                                       total_prolonged                                             
+                     count      mean       std  min  25%  50%  75%   max            count      mean        std  min  25%  50%  75%     max           count         mean            std  min  25%  50%        75%          max      count           mean           std         min  25%         50%           75%           max           count      mean       std  min  25%  50%  75%  max
+LoanOutcome                                                                                                                                                                                                                                                                                                                                                                                
+Defaulted          62688.0  2.217713  1.917769  0.0  1.0  2.0  3.0  32.0          62688.0  3.682635  74.399429  0.0  0.0  0.0  0.0  2776.0         43508.0  8578.720963  136079.096678  0.0  0.0  0.0  6046.5825   16950010.5    62688.0  718458.882502  1.572778e+06  -387310.50  0.0  223971.975  792877.19625  6.544140e+07         62688.0  0.019669  0.165005  0.0  0.0  0.0  0.0  6.0
+Repaid            243123.0  2.021952  1.755527  0.0  1.0  2.0  3.0  20.0         243123.0  4.631043  88.224679  0.0  0.0  0.0  0.0  2792.0        169463.0  9123.586625  378497.608951  0.0  0.0  0.0  5670.0000  115987185.0   243123.0  637271.677587  1.657346e+06 -6981558.21  0.0  162063.000  648164.25000  3.344983e+08        243123.0  0.040185  0.247289  0.0  0.0  0.0  0.0  9.0
+2026-03-28 10:53:49 | DEBUG | prev_summary numeric cols by LoanOutcome:
+            prior_approved                                               prior_refused                                               prior_total                                              
+                     count      mean       std  min  25%  50%  75%   max         count      mean       std  min  25%  50%  75%   max       count      mean       std  min  25%  50%  75%   max
+LoanOutcome                                                                                                                                                                                   
+Defaulted          71645.0  3.041734  2.147534  0.0  1.0  2.0  4.0  19.0       71645.0  1.043004  2.080697  0.0  0.0  0.0  1.0  64.0     71645.0  5.288199  4.615232  1.0  2.0  4.0  7.0  77.0
+Repaid            267212.0  3.064443  2.132118  0.0  1.0  3.0  4.0  27.0      267212.0  0.808167  1.754153  0.0  0.0  0.0  1.0  68.0    267212.0  4.832646  4.103169  1.0  2.0  4.0  6.0  73.0
+2026-03-28 10:53:49 | DEBUG | Train: 285004 rows, Test: 71251 rows
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+IncomeType                      
+Stable        0.212163  0.787837
+Unstable      0.189779  0.810221
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome     Defaulted    Repaid
+OccupationType                     
+Laborer          0.223294  0.776706
+Professional     0.192072  0.807928
+Unknown          0.195351  0.804649
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome    Defaulted    Repaid
+IncomeBracket                     
+High            0.214118  0.785882
+Low             0.192370  0.807630
+Medium          0.213612  0.786388
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome     Defaulted    Repaid
+ExtSource1Risk                     
+High             0.254274  0.745726
+Low              0.204604  0.795396
+MedHigh          0.244664  0.755336
+Medium           0.229862  0.770138
+Unknown          0.181813  0.818187
+VeryHigh         0.324758  0.675242
+VeryLow          0.171596  0.828404
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome     Defaulted    Repaid
+ExtSource2Risk                     
+High             0.240263  0.759737
+Low              0.164592  0.835408
+MedHigh          0.229846  0.770154
+Medium           0.199759  0.800241
+Unknown          0.085028  0.914972
+VeryHigh         0.278790  0.721210
+VeryLow          0.177122  0.822878
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome     Defaulted    Repaid
+ExtSource3Risk                     
+High             0.256668  0.743332
+Low              0.164172  0.835828
+MedHigh          0.219362  0.780638
+Medium           0.186062  0.813938
+Unknown          0.205991  0.794009
+VeryHigh         0.317132  0.682868
+VeryLow          0.131515  0.868485
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+AmtCredit                       
+High          0.242764  0.757236
+Low           0.155776  0.844224
+Med           0.170420  0.829580
+MedHigh       0.221172  0.778828
+MedLow        0.168272  0.831728
+VeryLow       0.106504  0.893496
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome    Defaulted    Repaid
+AmtGoodsPrice                     
+High            0.245559  0.754441
+Low             0.133099  0.866901
+MedHigh         0.213553  0.786447
+Medium          0.211529  0.788471
+Unknown         0.077626  0.922374
+VeryHigh        0.268170  0.731830
+VeryLow         0.139851  0.860149
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome            Defaulted    Repaid
+AmtReqCreditBureauMon                     
+Medium                  0.084956  0.915044
+Unknown                 0.224428  0.775572
+VeryLow                 0.065462  0.934538
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome     Defaulted    Repaid
+PaymentHistory                     
+High             0.209757  0.790243
+Low              0.128525  0.871475
+Medium           0.221384  0.778616
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome        Defaulted    Repaid
+PriorLoanApproved                     
+No                  0.117085  0.882915
+Yes                 0.211425  0.788575
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome   Defaulted    Repaid
+PrevRejected                     
+Multiple       0.265592  0.734408
+None           0.189949  0.810051
+Once           0.223072  0.776928
+Twice          0.238190  0.761810
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome        Defaulted    Repaid
+CreditUtilization                     
+High                0.258163  0.741837
+Low                 0.201249  0.798751
+MaxedOut            0.299699  0.700301
+Medium              0.219782  0.780218
+2026-03-28 10:53:50 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+DPD                             
+High          0.200613  0.799387
+Low           0.222013  0.777987
+Medium        0.206823  0.793177
+None          0.203711  0.796289
+2026-03-28 10:53:51 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome     Defaulted    Repaid
+ContractStatus                     
+Active           0.211824  0.788176
+Inactive         0.113391  0.886609
+2026-03-28 10:53:51 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+DaysOverdue                     
+High          0.202116  0.797884
+Low           0.298307  0.701693
+Medium        0.248945  0.751055
+None          0.205952  0.794048
+2026-03-28 10:53:51 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+MaxOverdue                      
+High          0.211313  0.788687
+Low           0.196112  0.803888
+Medium        0.200520  0.799480
+None          0.206950  0.793050
+2026-03-28 10:53:51 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+DebtLoad                        
+High          0.222632  0.777368
+Low           0.195837  0.804163
+Medium        0.197096  0.802904
+None          0.194574  0.805426
+2026-03-28 10:53:51 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome      Defaulted    Repaid
+CreditProlonged                     
+Many              0.060241  0.939759
+Never             0.208800  0.791200
+Once              0.118071  0.881929
+Several           0.109976  0.890024
+2026-03-28 10:53:51 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome    Defaulted    Repaid
+ActiveCredits                     
+Few             0.203072  0.796928
+Many            0.239002  0.760998
+None            0.203095  0.796905
+One             0.194412  0.805588
+2026-03-28 10:53:51 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome   Defaulted    Repaid
+NeighborRisk                     
+Unknown        0.206506  0.793494
+2026-03-28 10:53:51 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+OrgRisk                         
+Low           0.206253  0.793747
+Medium        0.272477  0.727523
+2026-03-28 10:53:51 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+RegionRisk                      
+Low           0.206506  0.793494
+2026-03-28 10:53:51 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+CustomerHub                     
+Low           0.195351  0.804649
+Medium        0.211618  0.788382
+2026-03-28 10:53:53 | DEBUG | Resampling LoanOutcome distribution:
+LoanOutcome
+Repaid       226149
+Defaulted    226149
+2026-03-28 10:53:53 | DEBUG | create_expert_model df rows, cols: (452298, 25)
+2026-03-28 10:53:56 | DEBUG | Model valid:True
+2026-03-28 10:53:56 | DEBUG | Full Influence Model
+2026-03-28 10:53:56 | DEBUG | 
+========================================
+2026-03-28 10:53:56 | DEBUG |   Influence Map for: LoanOutcome
+2026-03-28 10:53:56 | DEBUG | ========================================
+2026-03-28 10:53:56 | DEBUG | Model CPS
+2026-03-28 10:54:02 | DEBUG | Model cpds:+------------------------+-----+--------------------------------+
+| AmtGoodsPrice          | ... | AmtGoodsPrice(VeryLow)         |
++------------------------+-----+--------------------------------+
+| AmtReqCreditBureauMon  | ... | AmtReqCreditBureauMon(VeryLow) |
++------------------------+-----+--------------------------------+
+| ContractStatus         | ... | ContractStatus(Inactive)       |
++------------------------+-----+--------------------------------+
+| CreditProlonged        | ... | CreditProlonged(Several)       |
++------------------------+-----+--------------------------------+
+| ExtSource1Risk         | ... | ExtSource1Risk(VeryLow)        |
++------------------------+-----+--------------------------------+
+| ExtSource2Risk         | ... | ExtSource2Risk(VeryLow)        |
++------------------------+-----+--------------------------------+
+| ExtSource3Risk         | ... | ExtSource3Risk(VeryLow)        |
++------------------------+-----+--------------------------------+
+| PriorLoanApproved      | ... | PriorLoanApproved(Yes)         |
++------------------------+-----+--------------------------------+
+| LoanOutcome(Defaulted) | ... | 0.5                            |
++------------------------+-----+--------------------------------+
+| LoanOutcome(Repaid)    | ... | 0.5                            |
++------------------------+-----+--------------------------------+
+2026-03-28 10:54:02 | DEBUG | create_auto_model df rows, cols: (452298, 25)
+2026-03-28 10:54:36 | DEBUG | Structure search complete. Learned edges:
+[('IncomeType', 'OrgRisk'), ('OccupationType', 'CustomerHub'), ('OccupationType', 'IncomeType'), ('OccupationType', 'ExtSource1Risk'), ('OccupationType', 'OrgRisk'), ('IncomeBracket', 'AmtGoodsPrice'), ('IncomeBracket', 'OccupationType'), ('IncomeBracket', 'ExtSource2Risk'), ('IncomeBracket', 'AmtCredit'), ('IncomeBracket', 'IncomeType'), ('IncomeBracket', 'ExtSource1Risk'), ('IncomeBracket', 'OrgRisk'), ('ExtSource1Risk', 'IncomeType'), ('ExtSource1Risk', 'ExtSource2Risk'), ('ExtSource1Risk', 'AmtGoodsPrice'), ('ExtSource3Risk', 'ActiveCredits'), ('ExtSource3Risk', 'DebtLoad'), ('ExtSource3Risk', 'PrevRejected'), ('ExtSource3Risk', 'ExtSource1Risk'), ('ExtSource3Risk', 'DaysOverdue'), ('ExtSource3Risk', 'AmtReqCreditBureauMon'), ('ExtSource3Risk', 'LoanOutcome'), ('ExtSource3Risk', 'OccupationType'), ('AmtGoodsPrice', 'AmtCredit'), ('AmtGoodsPrice', 'LoanOutcome'), ('AmtReqCreditBureauMon', 'LoanOutcome'), ('PaymentHistory', 'CreditUtilization'), ('PaymentHistory', 'MaxOverdue'), ('PaymentHistory', 'ExtSource3Risk'), ('PriorLoanApproved', 'PaymentHistory'), ('PriorLoanApproved', 'PrevRejected'), ('PrevRejected', 'CreditUtilization'), ('PrevRejected', 'AmtGoodsPrice'), ('PrevRejected', 'ActiveCredits'), ('DPD', 'PaymentHistory'), ('DPD', 'ContractStatus'), ('DPD', 'PrevRejected'), ('DPD', 'MaxOverdue'), ('DPD', 'PriorLoanApproved'), ('ContractStatus', 'PriorLoanApproved'), ('ContractStatus', 'PaymentHistory'), ('ContractStatus', 'CreditUtilization'), ('MaxOverdue', 'ExtSource3Risk'), ('MaxOverdue', 'ActiveCredits'), ('MaxOverdue', 'CreditProlonged'), ('MaxOverdue', 'IncomeBracket'), ('MaxOverdue', 'DebtLoad'), ('MaxOverdue', 'AmtReqCreditBureauMon'), ('DebtLoad', 'IncomeBracket'), ('ActiveCredits', 'DebtLoad'), ('ActiveCredits', 'AmtReqCreditBureauMon'), ('ActiveCredits', 'CreditProlonged'), ('ActiveCredits', 'IncomeBracket'), ('ActiveCredits', 'OccupationType'), ('ActiveCredits', 'DaysOverdue')]
+2026-03-28 10:54:38 | DEBUG | Auto Model valid: True
+2026-03-28 10:54:38 | DEBUG | Full Influence Auto Model
+2026-03-28 10:54:38 | DEBUG | 
+========================================
+2026-03-28 10:54:38 | DEBUG |   Influence Map for: LoanOutcome
+2026-03-28 10:54:38 | DEBUG | ========================================
+2026-03-28 10:54:38 | DEBUG | Auto Model CPS
+2026-03-28 10:54:38 | DEBUG | Full Influence Auto Model: +------------------------+-----+--------------------------------+
+| AmtGoodsPrice          | ... | AmtGoodsPrice(VeryLow)         |
++------------------------+-----+--------------------------------+
+| AmtReqCreditBureauMon  | ... | AmtReqCreditBureauMon(VeryLow) |
++------------------------+-----+--------------------------------+
+| ExtSource3Risk         | ... | ExtSource3Risk(VeryLow)        |
++------------------------+-----+--------------------------------+
+| LoanOutcome(Defaulted) | ... | 0.11778471138845555            |
++------------------------+-----+--------------------------------+
+| LoanOutcome(Repaid)    | ... | 0.8822152886115445             |
++------------------------+-----+--------------------------------+
+2026-03-28 10:54:38 | DEBUG | === Expert Model Threshold Sweep ===
+2026-03-28 10:54:38 | DEBUG | running predict test df rows, cols: (71251, 25)
+2026-03-28 10:55:01 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.999
+  mean:   0.466
+  median: 0.500
+  >0.20:  63813
+  >0.30:  59847
+  >0.40:  51878
+2026-03-28 10:55:01 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260328_105501.png
+2026-03-28 10:55:02 | DEBUG | Threshold 0.40 | Precision: 0.246  Recall: 0.868  F1: 0.384  BalAcc: 0.588
+2026-03-28 10:55:02 | DEBUG | running predict test df rows, cols: (71251, 25)
+2026-03-28 10:55:25 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.999
+  mean:   0.466
+  median: 0.500
+  >0.20:  63813
+  >0.30:  59847
+  >0.40:  51878
+2026-03-28 10:55:26 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260328_105525.png
+2026-03-28 10:55:26 | DEBUG | Threshold 0.43 | Precision: 0.253  Recall: 0.831  F1: 0.387  BalAcc: 0.596
+2026-03-28 10:55:26 | DEBUG | running predict test df rows, cols: (71251, 25)
+2026-03-28 10:55:49 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.999
+  mean:   0.466
+  median: 0.500
+  >0.20:  63813
+  >0.30:  59847
+  >0.40:  51878
+2026-03-28 10:55:49 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260328_105549.png
+2026-03-28 10:55:50 | DEBUG | Threshold 0.45 | Precision: 0.259  Recall: 0.787  F1: 0.390  BalAcc: 0.601
+2026-03-28 10:55:50 | DEBUG | running predict test df rows, cols: (71251, 25)
+2026-03-28 10:56:13 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.999
+  mean:   0.466
+  median: 0.500
+  >0.20:  63813
+  >0.30:  59847
+  >0.40:  51878
+2026-03-28 10:56:13 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260328_105613.png
+2026-03-28 10:56:14 | DEBUG | Threshold 0.47 | Precision: 0.263  Recall: 0.765  F1: 0.391  BalAcc: 0.603
+2026-03-28 10:56:14 | DEBUG | running predict test df rows, cols: (71251, 25)
+2026-03-28 10:56:37 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.999
+  mean:   0.466
+  median: 0.500
+  >0.20:  63813
+  >0.30:  59847
+  >0.40:  51878
+2026-03-28 10:56:37 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260328_105637.png
+2026-03-28 10:56:38 | DEBUG | Threshold 0.48 | Precision: 0.266  Recall: 0.735  F1: 0.390  BalAcc: 0.603
+2026-03-28 10:56:38 | DEBUG | running predict test df rows, cols: (71251, 25)
+2026-03-28 10:57:01 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.999
+  mean:   0.466
+  median: 0.500
+  >0.20:  63813
+  >0.30:  59847
+  >0.40:  51878
+2026-03-28 10:57:01 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260328_105701.png
+2026-03-28 10:57:01 | DEBUG | Threshold 0.50 | Precision: 0.274  Recall: 0.688  F1: 0.392  BalAcc: 0.607
+2026-03-28 10:57:01 | DEBUG | running predict test df rows, cols: (71251, 25)
+2026-03-28 10:57:25 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.999
+  mean:   0.466
+  median: 0.500
+  >0.20:  63813
+  >0.30:  59847
+  >0.40:  51878
+2026-03-28 10:57:25 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260328_105725.png
+2026-03-28 10:57:26 | DEBUG | Threshold 0.52 | Precision: 0.287  Recall: 0.604  F1: 0.389  BalAcc: 0.607
+2026-03-28 10:57:26 | DEBUG | running predict test df rows, cols: (71251, 25)
+2026-03-28 10:57:49 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.999
+  mean:   0.466
+  median: 0.500
+  >0.20:  63813
+  >0.30:  59847
+  >0.40:  51878
+2026-03-28 10:57:49 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260328_105749.png
+2026-03-28 10:57:50 | DEBUG | Threshold 0.55 | Precision: 0.297  Recall: 0.507  F1: 0.374  BalAcc: 0.597

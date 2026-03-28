@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Jupyter - we only track .py files, not .ipynb
+*.ipynb
+
+# Data files (don't commit large datasets)
+*.csv
+*.pkl
+*.h5
+
+# Models (don't commit large model files)
+*.gguf
+*.bin
+
+# OS files
+.DS_Store
+Thumbs.db
