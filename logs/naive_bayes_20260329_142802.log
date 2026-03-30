@@ -1,0 +1,378 @@
+2026-03-29 14:28:02 | DEBUG | Logger initialized - level: DEBUG, file: logs/naive_bayes_20260329_142802.log
+2026-03-29 14:28:02 | DEBUG | Loading merged data ...
+2026-03-29 14:28:02 | DEBUG | Running get_merged_data dir: data/
+2026-03-29 14:28:02 | DEBUG | Running get_app_data dir: data/
+2026-03-29 14:28:06 | DEBUG | IncomeBracket distribution:
+IncomeBracket
+Medium    125959
+Low       121651
+High      108645
+2026-03-29 14:28:06 | DEBUG | LoanOutcome distribution:
+LoanOutcome
+Repaid       282686
+NaN           48744
+Defaulted     24825
+2026-03-29 14:28:06 | DEBUG | ExtSource1Risk distribution:
+ExtSource1Risk
+NaN         193910
+Medium       36561
+MedHigh      35702
+Low          32866
+High         29903
+VeryHigh     14066
+VeryLow      13247
+2026-03-29 14:28:06 | DEBUG | ExtSource2Risk distribution:
+ExtSource2Risk
+Medium      118303
+Low         101191
+MedHigh      61825
+High         42186
+VeryHigh     31400
+VeryLow        682
+NaN            668
+2026-03-29 14:28:06 | DEBUG | ExtSource3Risk distribution:
+ExtSource3Risk
+Medium      79047
+Low         70415
+NaN         69633
+MedHigh     62387
+High        41787
+VeryHigh    22651
+VeryLow     10335
+2026-03-29 14:28:06 | DEBUG | AmtCredit distribution:
+AmtCredit
+High       149475
+MedLow      80397
+MedHigh     71349
+Med         20703
+VeryLow     18421
+Low         15910
+2026-03-29 14:28:06 | DEBUG | AmtGoodsPrice distribution:
+AmtGoodsPrice
+VeryLow     88132
+Medium      81641
+VeryHigh    70442
+MedHigh     69809
+High        35981
+Low          9972
+NaN           278
+2026-03-29 14:28:06 | DEBUG | AmtReqCreditBureauMon distribution:
+AmtReqCreditBureauMon
+NaN        312142
+Medium      33471
+VeryLow     10642
+2026-03-29 14:28:06 | DEBUG | Running generate_bureau_summary dir: data/
+2026-03-29 14:28:27 | DEBUG | Running generate_install_summary dir: data/
+2026-03-29 14:29:41 | DEBUG | Running generate_util_summary dir: data/
+2026-03-29 14:29:45 | DEBUG | Running generate_pos_summary dir: data/
+2026-03-29 14:30:13 | DEBUG | Running generate_prev_summary dir: data/
+2026-03-29 14:31:01 | DEBUG | merged_df shape: (356255, 47)
+2026-03-29 14:31:01 | DEBUG | merged_df dtypes:
+SK_ID_CURR                     int64
+TARGET                       float64
+NAME_INCOME_TYPE                 str
+OCCUPATION_TYPE                  str
+AMT_INCOME_TOTAL             float64
+EXT_SOURCE_1                 float64
+EXT_SOURCE_2                 float64
+EXT_SOURCE_3                 float64
+AMT_CREDIT                   float64
+AMT_GOODS_PRICE              float64
+AMT_REQ_CREDIT_BUREAU_MON    float64
+IncomeType                    object
+OccupationType                object
+IncomeBracket                 object
+LoanOutcome                   object
+ExtSource1Risk                object
+ExtSource2Risk                object
+ExtSource3Risk                object
+AmtCredit                     object
+AmtGoodsPrice                 object
+AmtReqCreditBureauMon         object
+on_time_rate                 float64
+total_fills                  float64
+PaymentHistory                object
+prior_approved               float64
+prior_refused                float64
+prior_total                  float64
+PriorLoanApproved             object
+PrevRejected                  object
+avg_utilization              float64
+max_utilization              float64
+CreditUtilization             object
+max_dpd                      float64
+max_dpd_def                  float64
+active_contracts             float64
+DPD                           object
+ContractStatus                object
+max_days_overdue             float64
+max_overdue_amt              float64
+total_debt                   float64
+total_prolonged              float64
+active_credits               float64
+DaysOverdue                   object
+MaxOverdue                    object
+DebtLoad                      object
+CreditProlonged               object
+ActiveCredits                 object
+2026-03-29 14:31:01 | DEBUG | install_summary numeric cols by LoanOutcome:
+            on_time_rate                                                        total_fills                                                    
+                   count      mean       std  min       25%       50%  75%  max       count       mean        std  min   25%   50%   75%    max
+LoanOutcome                                                                                                                                    
+Defaulted        23876.0  0.896501  0.137389  0.0  0.838710  0.950820  1.0  1.0     23876.0  36.867691  38.733459  1.0  12.0  23.0  46.0  324.0
+Repaid          267767.0  0.926462  0.113891  0.0  0.892857  0.983607  1.0  1.0    267767.0  40.002461  40.902990  1.0  12.0  25.0  51.0  372.0
+2026-03-29 14:31:01 | DEBUG | util_summary numeric cols by LoanOutcome:
+            avg_utilization                                                                       max_utilization                                                                 
+                      count      mean       std       min       25%       50%       75%       max           count      mean       std  min       25%       50%       75%       max
+LoanOutcome                                                                                                                                                                       
+Defaulted            7534.0  0.442385  0.355076 -0.058333  0.052905  0.437508  0.774029  1.398834          7534.0  0.772460  0.440224  0.0  0.446382  1.023947  1.058566   2.86418
+Repaid              79371.0  0.286150  0.314616 -0.065116  0.000000  0.166524  0.519791  2.138790         79371.0  0.610743  0.485328  0.0  0.000000  0.923634  1.042524  11.77751
+2026-03-29 14:31:01 | DEBUG | pos_summary numeric cols by LoanOutcome:
+            active_contracts                                                       max_dpd                                                    max_dpd_def                                                 
+                       count       mean        std  min   25%   50%   75%    max     count       mean         std  min  25%  50%  75%     max       count      mean        std  min  25%  50%  75%     max
+LoanOutcome                                                                                                                                                                                               
+Defaulted            23621.0  24.303289  21.460701  0.0  10.0  17.0  32.0  217.0   23621.0  18.145125  169.206597  0.0  0.0  0.0  0.0  3592.0     23621.0  2.452563  47.380668  0.0  0.0  0.0  0.0  3277.0
+Repaid              265823.0  27.253131  22.592099  0.0  11.0  21.0  36.0  271.0  265823.0  15.480162  151.660588  0.0  0.0  0.0  0.0  4231.0    265823.0  1.381415  28.646712  0.0  0.0  0.0  0.0  3373.0
+2026-03-29 14:31:01 | DEBUG | bureau_summary numeric cols by LoanOutcome:
+            active_credits                                               max_days_overdue                                                  max_overdue_amt                                                                   total_debt                                                                                         total_prolonged                                             
+                     count      mean       std  min  25%  50%  75%   max            count      mean        std  min  25%  50%  75%     max           count          mean            std  min  25%  50%      75%          max      count           mean           std         min         25%       50%        75%           max           count      mean       std  min  25%  50%  75%  max
+LoanOutcome                                                                                                                                                                                                                                                                                                                                                                                 
+Defaulted          20368.0  2.471328  2.092045  0.0  1.0  2.0  3.0  32.0          20368.0  6.464356  99.418786  0.0  0.0  0.0  0.0  2776.0         14423.0  12599.596089  207365.312961  0.0  0.0  0.0  8309.79   16950010.5    20368.0  680978.726472  1.322658e+06  -387310.50  21517.0425  256288.5  801445.50  3.510852e+07         20368.0  0.043941  0.245715  0.0  0.0  0.0  0.0  6.0
+Repaid            243123.0  2.021952  1.755527  0.0  1.0  2.0  3.0  20.0         243123.0  4.631043  88.224679  0.0  0.0  0.0  0.0  2792.0        169463.0   9123.586625  378497.608951  0.0  0.0  0.0  5670.00  115987185.0   243123.0  637271.677587  1.657346e+06 -6981558.21      0.0000  162063.0  648164.25  3.344983e+08        243123.0  0.040185  0.247289  0.0  0.0  0.0  0.0  9.0
+2026-03-29 14:31:01 | DEBUG | prev_summary numeric cols by LoanOutcome:
+            prior_approved                                               prior_refused                                               prior_total                                              
+                     count      mean       std  min  25%  50%  75%   max         count      mean       std  min  25%  50%  75%   max       count      mean       std  min  25%  50%  75%   max
+LoanOutcome                                                                                                                                                                                   
+Defaulted          23845.0  2.820004  2.024836  0.0  1.0  2.0  4.0  19.0       23845.0  1.234557  2.347559  0.0  0.0  0.0  2.0  58.0     23845.0  5.131474  4.601421  1.0  2.0  4.0  7.0  60.0
+Repaid            267212.0  3.064443  2.132118  0.0  1.0  3.0  4.0  27.0      267212.0  0.808167  1.754153  0.0  0.0  0.0  1.0  68.0    267212.0  4.832646  4.103169  1.0  2.0  4.0  6.0  73.0
+2026-03-29 14:31:01 | DEBUG | Labelled rows available for modelling: 307511
+2026-03-29 14:31:01 | DEBUG | ============================================================
+2026-03-29 14:31:01 | DEBUG | Naive Bayes pipeline: starting
+2026-03-29 14:31:01 | DEBUG | ============================================================
+2026-03-29 14:31:01 | DEBUG | Features (20): ['IncomeType', 'OccupationType', 'IncomeBracket', 'ExtSource1Risk', 'ExtSource2Risk', 'ExtSource3Risk', 'AmtCredit', 'AmtGoodsPrice', 'AmtReqCreditBureauMon', 'PaymentHistory', 'PriorLoanApproved', 'PrevRejected', 'CreditUtilization', 'DPD', 'ContractStatus', 'DaysOverdue', 'MaxOverdue', 'DebtLoad', 'CreditProlonged', 'ActiveCredits']
+2026-03-29 14:31:01 | DEBUG | prepare_data: starting
+2026-03-29 14:31:01 | DEBUG | LoanOutcome distribution:
+LoanOutcome
+Repaid       282686
+Defaulted     24825
+Name: count, dtype: int64
+2026-03-29 14:31:01 | DEBUG | IncomeType distribution:
+IncomeType
+Stable      230391
+Unstable     77120
+Name: count, dtype: int64
+2026-03-29 14:31:01 | DEBUG | OccupationType distribution:
+OccupationType
+Laborer         132449
+Unknown          96391
+Professional     78671
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | IncomeBracket distribution:
+IncomeBracket
+Medium    108355
+Low       107229
+High       91927
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | ExtSource1Risk distribution:
+ExtSource1Risk
+Unknown     173378
+Medium       29874
+MedHigh      29212
+Low          27138
+High         25006
+VeryHigh     11661
+VeryLow      11242
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | ExtSource2Risk distribution:
+ExtSource2Risk
+Medium      101460
+Low          88025
+MedHigh      52426
+High         36506
+VeryHigh     27865
+Unknown        660
+VeryLow        569
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | ExtSource3Risk distribution:
+ExtSource3Risk
+Medium      67943
+Low         61199
+Unknown     60965
+MedHigh     52999
+High        35632
+VeryHigh    19514
+VeryLow      9259
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | AmtCredit distribution:
+AmtCredit
+High       125509
+MedLow      72078
+MedHigh     59856
+Med         18565
+VeryLow     17469
+Low         14034
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | AmtGoodsPrice distribution:
+AmtGoodsPrice
+VeryLow     80362
+Medium      70306
+MedHigh     59731
+VeryHigh    58535
+High        29138
+Low          9161
+Unknown       278
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | AmtReqCreditBureauMon distribution:
+AmtReqCreditBureauMon
+Unknown    263752
+Medium      33147
+VeryLow     10612
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | PaymentHistory distribution:
+PaymentHistory
+High       251777
+Medium      36694
+Unknown     15962
+Low          3078
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | PriorLoanApproved distribution:
+PriorLoanApproved
+Yes    290065
+No      17446
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | PrevRejected distribution:
+PrevRejected
+None        207217
+Once         46534
+Multiple     31021
+Twice        22739
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | CreditUtilization distribution:
+CreditUtilization
+Low         271434
+Medium       16982
+High         14053
+MaxedOut      5042
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | DPD distribution:
+DPD
+None      252828
+Low        47509
+High        5095
+Medium      2079
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | ContractStatus distribution:
+ContractStatus
+Active      289241
+Inactive     18270
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | DaysOverdue distribution:
+DaysOverdue
+None      304114
+Low         1523
+High        1084
+Medium       790
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | MaxOverdue distribution:
+MaxOverdue
+None      237071
+Medium     32698
+High       31519
+Low         6223
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | DebtLoad distribution:
+DebtLoad
+High      124863
+None      122365
+Medium     41352
+Low        18931
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | CreditProlonged distribution:
+CreditProlonged
+Never      299003
+Once         6869
+Several      1538
+Many          101
+Name: count, dtype: int64
+2026-03-29 14:31:02 | DEBUG | ActiveCredits distribution:
+ActiveCredits
+Few     96394
+None    90361
+One     74103
+Many    46653
+Name: count, dtype: int64
+2026-03-29 14:31:03 | DEBUG | prepare_data: complete - shape (307511, 20), default rate 0.081
+2026-03-29 14:31:03 | DEBUG | Train: (246008, 20)  Test: (61503, 20)
+2026-03-29 14:31:03 | DEBUG | Default rate - train: 0.081  test: 0.081
+2026-03-29 14:31:03 | DEBUG | resample_balanced: 226148 Repaid / 19860 Defaulted -> 452296 balanced rows
+2026-03-29 14:31:03 | DEBUG | Post-resample train shape: (452296, 20)
+2026-03-29 14:31:03 | DEBUG | select_alpha: sweeping [0.01, 0.05, 0.1, 0.5, 1.0, 2.0, 5.0]
+2026-03-29 14:31:07 | DEBUG |   alpha=0.010  BalAcc=0.6696 (+/- 0.0005)
+2026-03-29 14:31:10 | DEBUG |   alpha=0.050  BalAcc=0.6696 (+/- 0.0005)
+2026-03-29 14:31:13 | DEBUG |   alpha=0.100  BalAcc=0.6696 (+/- 0.0005)
+2026-03-29 14:31:16 | DEBUG |   alpha=0.500  BalAcc=0.6696 (+/- 0.0005)
+2026-03-29 14:31:17 | DEBUG |   alpha=1.000  BalAcc=0.6696 (+/- 0.0005)
+2026-03-29 14:31:17 | DEBUG |   alpha=2.000  BalAcc=0.6696 (+/- 0.0005)
+2026-03-29 14:31:18 | DEBUG |   alpha=5.000  BalAcc=0.6696 (+/- 0.0005)
+2026-03-29 14:31:18 | DEBUG | select_alpha: best alpha=0.01 (BalAcc=0.6696)
+2026-03-29 14:31:18 | DEBUG | Model fitted - alpha=0.01, classes=[0 1], class log-priors=[-0.69314718 -0.69314718]
+2026-03-29 14:31:18 | DEBUG | running predict test df rows, cols: (61503, 20)
+2026-03-29 14:31:18 | DEBUG | threshold_sweep results:
+ Threshold  Precision  Recall    F1  BalAcc
+      0.20      0.102   0.914 0.184   0.605
+      0.25      0.109   0.878 0.195   0.626
+      0.30      0.117   0.843 0.206   0.643
+      0.35      0.126   0.804 0.217   0.656
+      0.40      0.135   0.766 0.230   0.668
+      0.45      0.145   0.724 0.242   0.675
+      0.50      0.156   0.679 0.254   0.679
+      0.55      0.167   0.626 0.264   0.676
+      0.60      0.179   0.571 0.272   0.670
+2026-03-29 14:31:18 | DEBUG | Best threshold by F1: 0.6 (F1=0.272, BalAcc=0.67)
+2026-03-29 14:31:18 | DEBUG | Auto-selected best threshold: 0.60
+2026-03-29 14:31:18 | DEBUG | NaiveBayes | threshold=0.60
+2026-03-29 14:31:18 | DEBUG | Accuracy: 0.753
+2026-03-29 14:31:18 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+      Repaid       0.95      0.77      0.85     56538
+   Defaulted       0.18      0.57      0.27      4965
+
+    accuracy                           0.75     61503
+   macro avg       0.57      0.67      0.56     61503
+weighted avg       0.89      0.75      0.80     61503
+
+2026-03-29 14:31:18 | DEBUG | Balanced Accuracy: 0.6702
+2026-03-29 14:31:18 | DEBUG | ROC-AUC: 0.7343
+2026-03-29 14:31:18 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                  Pred Repaid  Pred Defaulted
+Actual Repaid           43492           13046
+Actual Defaulted         2129            2836
+2026-03-29 14:31:18 | DEBUG | Predicted probability distribution:
+2026-03-29 14:31:18 | DEBUG |   min:    0.002
+2026-03-29 14:31:18 | DEBUG |   max:    0.997
+2026-03-29 14:31:18 | DEBUG |   mean:   0.406
+2026-03-29 14:31:18 | DEBUG |   median: 0.364
+2026-03-29 14:31:18 | DEBUG |   >0.20:  44333
+2026-03-29 14:31:18 | DEBUG |   >0.30:  35704
+2026-03-29 14:31:18 | DEBUG |   >0.40:  28074
+2026-03-29 14:31:18 | DEBUG | 
+=======================================================
+  NaiveBayes - Best Performance Summary
+=======================================================
+  Threshold : 0.60
+  Precision : 0.179
+  Recall    : 0.571
+  F1        : 0.272
+  BalAcc    : 0.670
+  ROC-AUC   : 0.7343
+=======================================================
+  Compare against BN Expert:
+    F1=0.392  BalAcc=0.607  (threshold=0.50, 8 parents)
+=======================================================
+
+2026-03-29 14:39:41 | DEBUG | Probability distribution plot saved: logs/nb_prob_dist_naivebayes_20260329_143118.png
+2026-03-29 14:39:43 | DEBUG | Threshold sweep plot saved: logs/nb_threshold_sweep_naivebayes_20260329_143941.png
+2026-03-29 14:40:06 | DEBUG | Feature log-probability plot saved: logs/nb_feature_log_probs_20260329_143943.png
+2026-03-29 14:40:09 | DEBUG | ROC curve plot saved: logs/nb_roc_naivebayes_20260329_144006.png
+2026-03-29 14:40:09 | DEBUG | Naive Bayes pipeline: complete

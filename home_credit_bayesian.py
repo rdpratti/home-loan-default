@@ -1,15 +1,24 @@
 """
-batch_runner.py
----------------
-Simple sequential batch controller for Python scripts.
- 
+home_credit_bayesian.py
+-----------------------
+Bayesian Network pipeline for predicting home-loan default using the Home Credit dataset.
+
+The pipeline:
+  1. Loads and merges the application, installment, credit-card, POS-cash, bureau,
+     and previous-application CSV files into a single discretised feature table.
+  2. Trains two Discrete Bayesian Networks on a class-balanced training split:
+       - Expert model  — DAG edges supplied by domain knowledge / graph analysis.
+       - Auto model    — DAG learned automatically via Hill-Climb Search (BIC-D).
+  3. Runs Variable-Elimination inference on the held-out test set, classifying each
+     applicant as 'Defaulted' or 'Repaid' using an adjustable probability threshold.
+  4. Reports a confusion matrix, classification metrics, and a predicted-probability
+     histogram for each model.
+
 Usage:
-    python batch_runner.py                  # uses jobs defined in JOBS list below
-    python batch_runner.py --stop-on-fail   # halt immediately if any job fails
-    python batch_runner.py --log-dir logs   # write per-job logs to a folder
+    python home_credit_bayesian.py
 """
  
-import subprocess
+
 import sys
 import time
 import argparse
@@ -35,13 +44,26 @@ import logging
 logging.getLogger('pgmpy').setLevel(logging.WARNING)
 import networkx as nx
 sys.path.insert(0, 'src')
-from graph_analytics import get_graph_summary
+from data_prep import get_merged_data, MODEL_COLS
+from graph_structure_discovery import select_direct_parents
+#from graph_analytics import get_graph_summary
 
 # module-level logger
 logger = logging.getLogger(__name__)
 
 #setup logging
 def setup_logging(level):
+    """Configure file and console logging for the pipeline run.
+
+    Creates a timestamped log file under ``logs/`` and attaches both a
+    ``FileHandler`` and a ``StreamHandler`` (stdout) to the module-level
+    logger.  Call this once at the start of ``main()``.
+
+    Parameters
+    ----------
+    level : int
+        Logging level constant, e.g. ``logging.DEBUG`` or ``logging.INFO``.
+    """
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     log_file  = f'logs/bayesian_model_{timestamp}.log'
     
@@ -61,322 +83,28 @@ def setup_logging(level):
     
     return 
  
-# Payment on_time_rate and Payment History. Were recent installments paid on time? 
-# Analogous to PriorFills in Pre-Auth
-# (analog: did member fill prior prescriptions as expected?)
-def generate_install_summary(data_dir):
-    
-    logger.debug(f"Running generate_install_summary dir: {data_dir}")
-    
-    
-    install      = pd.read_csv(f"{data_dir}\\installments_payments.csv")
-    
-    fill_summary = install.groupby('SK_ID_CURR').apply(
-        lambda x: pd.Series({
-            'on_time_rate': (x['DAYS_ENTRY_PAYMENT'] <= x['DAYS_INSTALMENT']).mean(),
-            'total_fills':  len(x)
-        })
-        ).reset_index()
 
-    # Bucket on_time_rate into categorical PaymentHistory
-    fill_summary['PaymentHistory'] = pd.cut(
-            fill_summary['on_time_rate'],
-            bins=[0, 0.5, 0.8, 1.01],
-            labels=['Low', 'Medium', 'High']
-        )
-    
-    return fill_summary
+def create_expert_model(df, expert_list):
+    """Fit a Discrete Bayesian Network using a hand-crafted DAG structure.
 
-# Add Credit Utilization
-def generate_util_summary(data_dir):
-    
-    logger.debug(f"Running generate_util_summary dir: {data_dir}")
-    
-    credit_card  = pd.read_csv(f"{data_dir}\\credit_card_balance.csv")
+    The DAG edges in ``expert_list`` encode domain knowledge about how
+    applicant and credit-history variables causally influence loan outcome.
+    Conditional probability tables (CPTs) are estimated from the (balanced)
+    training data using a Bayesian Estimator with a weak Dirichlet prior so
+    that sparse parent-state combinations do not produce zero probabilities.
 
-    credit_card['CREDIT_UTILIZATION'] = np.where(
-    credit_card['AMT_CREDIT_LIMIT_ACTUAL'] > 0,
-    credit_card['AMT_BALANCE'] / credit_card['AMT_CREDIT_LIMIT_ACTUAL'], 0 )
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Class-balanced training data (all columns as ``object`` dtype).
+    expert_list : list of tuple[str, str]
+        DAG edges as ``(parent, child)`` pairs.
 
-    util_summary = credit_card.groupby('SK_ID_CURR').agg(
-                        avg_utilization = ('CREDIT_UTILIZATION', 'mean'),
-                        max_utilization = ('CREDIT_UTILIZATION', 'max')
-                    ).reset_index()
-
-    util_summary['CreditUtilization'] = pd.cut(
-                        util_summary['avg_utilization'],
-                        bins=[-0.01, 0.30, 0.60, 0.90, 999],
-                        labels=['Low', 'Medium', 'High', 'MaxedOut']
-                    )
-    return util_summary
-
-# Add Positive Cash
-def generate_pos_summary(data_dir):
-    
-    logger.debug(f"Running generate_pos_summary dir: {data_dir}")
-    
-    pos_cash     = pd.read_csv(f"{data_dir}\\POS_CASH_balance.csv")
-
-    pos_summary = pos_cash.groupby('SK_ID_CURR').agg(
-                      max_dpd          = ('SK_DPD',               'max'),
-                      max_dpd_def      = ('SK_DPD_DEF',           'max'),
-                      active_contracts = ('NAME_CONTRACT_STATUS', lambda x: (x == 'Active').sum())
-                  ).reset_index()
-
-    pos_summary['DPD'] = pd.cut(
-                            pos_summary['max_dpd'],
-                            bins=[-1, 0, 30, 60, 999999],
-                            labels=['None', 'Low', 'Medium', 'High']
-                         )
-
-    pos_summary['ContractStatus'] = np.where(pos_summary['active_contracts'] > 0, 'Active', 'Inactive')
-    
-    return pos_summary
-
-# Add bureau data
-# bureau → bureau_summary
-def generate_bureau_summary(data_dir):
-    
-    logger.debug(f"Running generate_bureau_summary dir: {data_dir}")
-    
-    bureau       = pd.read_csv(f"{data_dir}\\bureau.csv")
-    
-    bureau_summary = bureau.groupby('SK_ID_CURR').agg(
-                        max_days_overdue = ('CREDIT_DAY_OVERDUE',    'max'),
-                        max_overdue_amt  = ('AMT_CREDIT_MAX_OVERDUE', 'max'),
-                        total_debt       = ('AMT_CREDIT_SUM_DEBT',    'sum'),
-                        total_prolonged  = ('CNT_CREDIT_PROLONG',     'sum'),
-                        active_credits   = ('CREDIT_ACTIVE', lambda x: (x == 'Active').sum())
-                    ).reset_index()
-
-    bureau_summary['DaysOverdue'] = pd.cut(
-                                        bureau_summary['max_days_overdue'],
-                                        bins=[-1, 0, 30, 90, 999999],
-                                        labels=['None', 'Low', 'Medium', 'High']
-                                    )
-            
-    bureau_summary['MaxOverdue'] = pd.cut(
-                                        bureau_summary['max_overdue_amt'],
-                                        bins=[-1, 0, 1000, 10000, 999999999],
-                                        labels=['None', 'Low', 'Medium', 'High']
-                                    )
-    
-    bureau_summary['DebtLoad'] = pd.cut(
-                                        bureau_summary['total_debt'],
-                                        bins=[-1, 0, 50000, 200000, 999999999],
-                                        labels=['None', 'Low', 'Medium', 'High']
-                                )
-    
-    bureau_summary['CreditProlonged'] = pd.cut(
-                                            bureau_summary['total_prolonged'],
-                                            bins=[-1, 0, 1, 3, 999],
-                                            labels=['Never', 'Once', 'Several', 'Many']
-                                        )
-    
-    bureau_summary['ActiveCredits'] = pd.cut(
-                                        bureau_summary['active_credits'],
-                                        bins=[-1, 0, 1, 3, 999],
-                                        labels=['None', 'One', 'Few', 'Many']
-                                      )
-    
-    return bureau_summary
-
-#prev_app → prev_summary
-def generate_prev_summary(data_dir):
-    
-    logger.debug(f"Running generate_prev_summary dir: {data_dir}")
-    
-    prev_app     = pd.read_csv(f"{data_dir}\\previous_application.csv")
-
-    prev_summary = prev_app.groupby('SK_ID_CURR').agg(
-                        prior_approved = ('NAME_CONTRACT_STATUS', lambda x: (x == 'Approved').sum()),
-                        prior_refused  = ('NAME_CONTRACT_STATUS', lambda x: (x == 'Refused').sum()),
-                        prior_total    = ('NAME_CONTRACT_STATUS', 'count')
-                    ).reset_index()
-    
-    prev_summary['PriorLoanApproved'] = np.where(prev_summary['prior_approved'] > 0, 'Yes', 'No')
-
-    prev_summary['PrevRejected'] = pd.cut(
-                prev_summary['prior_refused'],
-                bins=[-1, 0, 1, 2, 999999],   # ← safer upper bound
-                labels=['None', 'Once', 'Twice', 'Multiple']
-    )
-    
-    return prev_summary
-
-def get_app_data2(data_dir):
-    
-    logger.debug(f"Running get_app_data dir: {data_dir}")
-    
-    app_train  = pd.read_csv(f"{data_dir}\\application_train.csv")
-    app_test   = pd.read_csv(f"{data_dir}\\application_test.csv")
-    app_data   = pd.concat([app_train, app_test], ignore_index=True)
-    
-    # IncomeType: is the applicant's income from a stable source?
-    # (analog: is the diagnosis code consistent with the drug requested?)
-    new_cols = pd.DataFrame({
-                    'IncomeType': np.where(
-                        app_data['NAME_INCOME_TYPE'].isin(['Working', 'Commercial associate']),
-                            'Stable', 'Unstable'
-                ),
-                    'OccupationType': np.where(
-                        app_data['OCCUPATION_TYPE'].isna(), 'Unknown', np.where(
-                                app_data['OCCUPATION_TYPE'].isin(['Managers', 'Core staff',
-                                                                   'High skill tech staff',
-                                                                   'Medicine staff', 'Accountants']),
-                                                                    'Professional', 'Laborer'
-                                                                 )
-                ),
-                        'IncomeBracket': pd.qcut(app_data['AMT_INCOME_TOTAL'], q=3, labels=['Low', 'Medium', 'High']
-                ),
-                        'LoanOutcome': np.where(app_data['TARGET'] == 0, 'Repaid', 'Defaulted')
-                ,
-                        'ExtSource1Risk': pd.cut(app_data['EXT_SOURCE_1'],
-                                                  bins  = [0, 0.2, 0.35, 0.5, 0.65, 0.8, 1.01],
-                                                  labels= ['VeryHigh', 'High', 'MedHigh', 'Medium', 'Low', 'VeryLow']),
-
-                        'ExtSource2Risk': pd.cut(app_data['EXT_SOURCE_2'],
-                                                  bins  = [0, 0.2, 0.35, 0.5, 0.65, 0.8, 1.01],
-                                                  labels= ['VeryHigh', 'High', 'MedHigh', 'Medium', 'Low', 'VeryLow']),
-
-                        'ExtSource3Risk': pd.cut(app_data['EXT_SOURCE_3'],
-                                                  bins  = [0, 0.2, 0.35, 0.5, 0.65, 0.8, 1.01],
-                                                  labels= ['VeryHigh', 'High', 'MedHigh', 'Medium', 'Low', 'VeryLow']),
-
-                        'AmtCredit': pd.cut(app_data['AMT_CREDIT'],
-                                                  bins  = [0, 252000, 270000, 675000, 1125000, 1350000, 4100000],
-                                                  labels= ['MedHigh', 'Med', 'High', 'MedLow', 'VeryLow', 'Low']),
-
-                        'AmtGoodsPrice': pd.cut(app_data['AMT_GOODS_PRICE'],
-                                                  bins  = [0, 171000, 270000, 450000, 454500, 675000, 4100000],
-                                                  labels= ['High', 'Medium', 'VeryHigh', 'Low', 'MedHigh', 'VeryLow']),
-
-                        'AmtReqCreditBureauMon': pd.cut(app_data['AMT_REQ_CREDIT_BUREAU_MON'],
-                                                  bins  = [0, 1, 27],
-                                                  labels= ['Medium', 'VeryLow']),                                                                              
-    }, index=app_data.index)
-    
-    temp_df = pd.concat([app_data, new_cols], axis=1).copy()
-     
-    
-    # Summary Counts
-    logger.debug(f"IncomeBracket distribution:\n{temp_df['IncomeBracket'].value_counts(dropna=False).to_string()}")
-    logger.debug(f"LoanOutcome distribution:\n{temp_df['LoanOutcome'].value_counts(dropna=False).to_string()}")
-    for col in ['ExtSource1Risk', 'ExtSource2Risk', 'ExtSource3Risk', 'AmtCredit', 'AmtGoodsPrice', 'AmtReqCreditBureauMon']:
-        logger.debug(f"{col} distribution:\n"
-                     f"{temp_df[col].value_counts(dropna=False).to_string()}")
-
-    return temp_df
-
-def get_merged_data(data_dir):
-    
-    logger.debug(f"Running get merged data dir: {data_dir}")
-
-    app_data = get_app_data2(data_dir)
-    bureau_summary = generate_bureau_summary(data_dir)
-    install_summary = generate_install_summary(data_dir)
-    util_summary = generate_util_summary(data_dir)
-    pos_summary = generate_pos_summary(data_dir)
-    prev_summary = generate_prev_summary(data_dir)
-
-    # Graph analytics — uses TARGET (NaN for test rows → defaulted=-1, excluded
-    # from default rate calculations).
-    graph_summary = get_graph_summary(app_data, logger)
-
-    # Merge all into merged_df
-
-    merged_df = (
-            app_data[['SK_ID_CURR', 'IncomeType', 'OccupationType',
-                        'IncomeBracket', 'LoanOutcome',
-                        'ExtSource1Risk', 'ExtSource2Risk', 'ExtSource3Risk',
-                        'AmtCredit','AmtGoodsPrice', 'AmtReqCreditBureauMon']]
-                    .merge(install_summary[['SK_ID_CURR', 'PaymentHistory']],
-                       on='SK_ID_CURR', how='left')
-                    .merge(prev_summary[['SK_ID_CURR', 'PriorLoanApproved', 'PrevRejected']],
-                       on='SK_ID_CURR', how='left')
-                    .merge(util_summary[['SK_ID_CURR', 'CreditUtilization']],
-                       on='SK_ID_CURR', how='left')
-                    .merge(pos_summary[['SK_ID_CURR', 'DPD', 'ContractStatus']],
-                       on='SK_ID_CURR', how='left')
-                    .merge(bureau_summary[['SK_ID_CURR', 'DaysOverdue', 'MaxOverdue',
-                                        'DebtLoad', 'CreditProlonged', 'ActiveCredits']],
-                       on='SK_ID_CURR', how='left')
-                    .merge(graph_summary[['SK_ID_CURR', 'NeighborRisk', 'OrgRisk',
-                                          'RegionRisk', 'CustomerHub']],
-                       on='SK_ID_CURR', how='left')
-                    .drop(columns=['SK_ID_CURR'])
-     )
-
-    # Fill nulls 
-    fill_values = {
-        'PaymentHistory':   'Low',
-        'PriorLoanApproved':'No',
-        'PrevRejected':     'None',
-        'CreditUtilization':'Low',
-        'DPD':              'None',
-        'ContractStatus':   'Inactive',
-        'DaysOverdue':      'None',
-        'MaxOverdue':       'None',
-        'DebtLoad':         'None',
-        'CreditProlonged':  'Never',
-        'ActiveCredits':    'None',
-        'NeighborRisk':     'Unknown',
-        'OrgRisk':          'Unknown',
-        'RegionRisk':       'Unknown',
-        'CustomerHub':      'Unknown',
-        'ExtSource1Risk': 'Unknown',
-        'ExtSource2Risk': 'Unknown',
-        'ExtSource3Risk': 'Unknown',
-        'AmtCredit': 'Unknown',
-        'AmtGoodsPrice': 'Unknown',
-        'AmtReqCreditBureauMon': 'Unknown',
-    }
-
-    for col, val in fill_values.items():
-        if merged_df[col].dtype.name == 'category':
-            # Only add category if it doesn't already exist
-            if val not in merged_df[col].cat.categories:
-                merged_df[col] = merged_df[col].cat.add_categories(val)
-            merged_df[col] = merged_df[col].fillna(val)
-        else:
-            merged_df[col] = merged_df[col].fillna(val)
-    
-    #convert all colunns except SK_ID_CURR to string object
-    model_cols = [col for col in merged_df.columns if col != 'SK_ID_CURR']
-    merged_df[model_cols] = merged_df[model_cols].astype('object')
-
-    # ── Confirm ───────────────────────────────────────────────────────────
-    logger.debug(f"merged df dtypes:\n{merged_df.dtypes}")
-    logger.debug(f"merged df shape:\n{merged_df.shape}")
-
-    log_raw_diagnostics(app_data, install_summary, util_summary, 
-                        pos_summary, bureau_summary, prev_summary)
-    
-    return merged_df
-
-def log_raw_diagnostics(app_data, install_summary, util_summary, 
-                         pos_summary, bureau_summary, prev_summary):
-    
-    labeled = app_data[['SK_ID_CURR', 'LoanOutcome']].dropna(subset=['LoanOutcome'])
-    
-    summaries = {
-        'install_summary' : install_summary,
-        'util_summary'    : util_summary,
-        'pos_summary'     : pos_summary,
-        'bureau_summary'  : bureau_summary,
-        'prev_summary'    : prev_summary,
-    }
-    
-    for name, summary in summaries.items():
-        numeric_cols = summary.select_dtypes(include='number').columns.difference(['SK_ID_CURR']).tolist()
-        diag = summary[['SK_ID_CURR'] + numeric_cols].merge(labeled, on='SK_ID_CURR')
-        logger.debug(f"{name} numeric cols by LoanOutcome:\n"
-                     f"{diag.groupby('LoanOutcome')[numeric_cols].describe().to_string()}")
-
-    return
-
-def create_expert_model(df, expert_list): 
-    
+    Returns
+    -------
+    pgmpy.models.DiscreteBayesianNetwork
+        Fitted model with CPTs for every node in the DAG.
+    """
     logger.debug(f"create_expert_model df rows, cols: {df.shape}")
     
 #    print("Training data distribution:")
@@ -463,6 +191,21 @@ def create_auto_model(df, max_indegree=2, max_iter=int(1e4), scoring_method='bic
     return auto_model
 
 def show_influences(model, target):
+    """Log all direct and indirect influence paths leading to a target node.
+
+    Traverses the DAG to identify which nodes are direct parents of ``target``
+    and which reach it through intermediate nodes, then logs each edge/path
+    with a [DIRECT] or [INDIRECT] label.  Useful for auditing the model's
+    causal structure after fitting.
+
+    Parameters
+    ----------
+    model : pgmpy.models.DiscreteBayesianNetwork
+        The fitted Bayesian Network.
+    target : str
+        Name of the variable whose influence map should be printed
+        (typically ``'LoanOutcome'``).
+    """
     direct   = set(model.get_parents(target))
     all_anc  = nx.ancestors(model, target)
     indirect = all_anc - direct
@@ -487,22 +230,54 @@ def show_influences(model, target):
     logger.debug("\n".join(lines))
 
 
-def  display_confusion_matrix(actuals, predictions):
+def display_confusion_matrix(actuals, predictions):
+    """Log accuracy, a full classification report, and a formatted confusion matrix.
 
+    The confusion matrix is arranged with the positive class (Defaulted) in the
+    top-left so that the true-positive count (correctly identified defaults) is
+    immediately visible.  Layout::
+
+                     Defaulted   Repaid
+        Defaulted      TP          FN
+        Repaid         FP          TN
+
+    Parameters
+    ----------
+    actuals : list[str]
+        Ground-truth labels (``'Defaulted'`` or ``'Repaid'``).
+    predictions : list[str]
+        Model-predicted labels.
+    """
     # Core metrics
     logger.debug(f"Accuracy: {accuracy_score(actuals, predictions):.3f}")
     logger.debug(f"Classification Report:\n{classification_report(actuals, predictions)}")
 
     # Confusion matrix
-    cm = confusion_matrix(actuals, predictions, labels=['Repaid', 'Defaulted'])
+    cm = confusion_matrix(actuals, predictions, labels=['Defaulted','Repaid'])
     logger.debug(f"Confusion Matrix (rows=actual, cols=predicted):\n"
-                 f"                 Repaid  Defaulted\n"
-                 f"  Repaid       {cm[0][0]:>6}  {cm[0][1]:>9}\n"
-                 f"  Defaulted    {cm[1][0]:>6}  {cm[1][1]:>9}")
+                 f"                 Defaulted  Repaid\n"
+                 f"  Defaulted       {cm[0][0]:>6}  {cm[0][1]:>9}\n"
+                 f"  Repaid          {cm[1][0]:>6}  {cm[1][1]:>9}")
 
     return
 
 def plot_probability_distribution(probs_list, threshold, model_name):
+    """Save a histogram of predicted default probabilities with the decision threshold marked.
+
+    Saves a PNG to ``logs/<model_name>_prob_dist_<timestamp>.png``.  The red
+    dashed line shows the classification threshold and the shaded region to its
+    right highlights applicants classified as Defaulted.  Reviewing this plot
+    helps diagnose probability calibration and threshold placement.
+
+    Parameters
+    ----------
+    probs_list : list[float]
+        Per-row P(Defaulted) values from the inference engine.
+    threshold : float
+        Decision threshold — rows above this value are labelled Defaulted.
+    model_name : str
+        Label used in the plot title and output filename (e.g. ``'Expert'``).
+    """
     fig, ax = plt.subplots(figsize=(10, 5))
     
     ax.hist(probs_list, bins=50, edgecolor='black', color='steelblue', alpha=0.7)
@@ -529,8 +304,39 @@ def plot_probability_distribution(probs_list, threshold, model_name):
     return
 
 
-def predict(test_df, model, target, default_threshold=0.2,mname=None):
-    
+def predict(test_df, model, target, default_threshold=0.2, mname=None):
+    """Run Variable-Elimination inference on the test set and evaluate predictions.
+
+    For each row in ``test_df``, queries the model with all non-target columns
+    as evidence and retrieves P(Defaulted).  Any row whose P(Defaulted) meets
+    or exceeds ``default_threshold`` is classified as Defaulted; otherwise
+    Repaid.
+
+    Also logs summary statistics of the predicted-probability distribution
+    (min, max, mean, median, and counts above common thresholds) and saves a
+    probability histogram plot.
+
+    Parameters
+    ----------
+    test_df : pandas.DataFrame
+        Held-out test set (includes the target column for evaluation).
+    model : pgmpy.models.DiscreteBayesianNetwork
+        Fitted Bayesian Network.
+    target : str
+        Name of the target variable (``'LoanOutcome'``).
+    default_threshold : float, optional
+        Probability threshold above which a case is labelled Defaulted.
+        Default 0.2.  Lower values increase recall at the cost of precision.
+    mname : str, optional
+        Short model label used in logging and plot filenames.
+
+    Returns
+    -------
+    actuals : list[str]
+        True labels from ``test_df[target]``.
+    predictions : list[str]
+        Model predictions (``'Defaulted'`` or ``'Repaid'``).
+    """
     logger.debug(f"running predict test df rows, cols: {test_df.shape}")
 #    print("Test data distribution:")
 #    print(test_df['LoanOutcome'].value_counts())
@@ -586,16 +392,55 @@ def predict(test_df, model, target, default_threshold=0.2,mname=None):
     return actuals, predictions  
 
 def balance_training_data(train_df):
-    #guaranteee 75/25 paidoff/defaulted
-    ros = RandomOverSampler(sampling_strategy=1.0, random_state=42)
+    """Oversample the minority class to reduce class imbalance before training.
+
+    Uses ``RandomOverSampler`` with ``sampling_strategy=0.35``, which means
+    the minority class (Defaulted) is upsampled until it represents 35 % of
+    the majority class count — yielding roughly a 74/26 Repaid/Defaulted split
+    in the resampled data.  This is deliberately less aggressive than 50/50 so
+    that predicted probabilities remain better calibrated to the true ~20 %
+    base rate.
+
+    Parameters
+    ----------
+    train_df : pandas.DataFrame
+        Training split before resampling.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Resampled training data with the same columns as ``train_df``.
+    """
+    #guaranteee 3/1 paidoff/defaulted
+    ros = RandomOverSampler(sampling_strategy=.35, random_state=42)
     train_resampled, _ = ros.fit_resample(train_df, train_df['LoanOutcome'])
     logger.debug(f"Resampling LoanOutcome distribution:\n{train_resampled['LoanOutcome'].value_counts().to_string()}")
     return train_resampled
 
 def run_sweep(test_df, model, auto_model):
+    """Evaluate both models across a range of decision thresholds.
+
+    Iterates over a predefined list of probability thresholds for both the
+    expert and auto models, calling ``predict()`` at each threshold and logging
+    Precision, Recall, F1, and Balanced Accuracy.  Use this to identify the
+    operating point that best balances catching defaults (recall) against false
+    alarms (1 − precision).
+
+    At the true default base rate (~20 %), a threshold near 0.30 tends to
+    maximise Balanced Accuracy; 0.20 tends to maximise F1.
+
+    Parameters
+    ----------
+    test_df : pandas.DataFrame
+        Held-out test set.
+    model : pgmpy.models.DiscreteBayesianNetwork
+        Fitted expert Bayesian Network.
+    auto_model : pgmpy.models.DiscreteBayesianNetwork
+        Fitted auto (Hill-Climb) Bayesian Network.
+    """
     logger.debug("=== Expert Model Threshold Sweep ===")
-    #for threshold in [0.10, 0.15, 0.20, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6]:
-    for threshold in [0.40, 0.43, 0.45, 0.47, 0.48, 0.50, 0.52, 0.55]:
+    for threshold in [0.10, 0.15, 0.20, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6]:
+    #for threshold in [0.40, 0.43, 0.45, 0.47, 0.48, 0.50, 0.52, 0.55]:
         acts, preds = predict(test_df, model, 'LoanOutcome', default_threshold=threshold, mname = 'Expert')
         precision = precision_score(acts, preds, pos_label='Defaulted', zero_division=0)
         recall    = recall_score(acts, preds,    pos_label='Defaulted', zero_division=0)
@@ -603,23 +448,55 @@ def run_sweep(test_df, model, auto_model):
         bal_acc   = balanced_accuracy_score(acts, preds)
         logger.debug(f"Threshold {threshold:.2f} | Precision: {precision:.3f}  Recall: {recall:.3f}  F1: {f1:.3f}  BalAcc: {bal_acc:.3f}")
 
-    #logger.debug("\n=== Auto Model Threshold Sweep ===")
-    #for threshold in [0.10, 0.15, 0.20, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6]:
-    #    acts, preds = predict(test_df, auto_model, 'LoanOutcome',
-    #                          default_threshold=threshold, mname = 'Auto')
-    #    precision = precision_score(acts, preds, pos_label='Defaulted', zero_division=0)
-    #    recall    = recall_score(acts, preds,    pos_label='Defaulted', zero_division=0)
-    #    f1        = f1_score(acts, preds,        pos_label='Defaulted', zero_division=0)
-    #    bal_acc   = balanced_accuracy_score(acts, preds)
-    #    logger.debug(f"Threshold {threshold:.2f} | Precision: {precision:.3f}  Recall: {recall:.3f}  F1: {f1:.3f}  BalAcc: {bal_acc:.3f}")
+    logger.debug("\n=== Auto Model Threshold Sweep ===")
+    for threshold in [0.10, 0.15, 0.20, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6]:
+        acts, preds = predict(test_df, auto_model, 'LoanOutcome',
+                              default_threshold=threshold, mname = 'Auto')
+        precision = precision_score(acts, preds, pos_label='Defaulted', zero_division=0)
+        recall    = recall_score(acts, preds,    pos_label='Defaulted', zero_division=0)
+        f1        = f1_score(acts, preds,        pos_label='Defaulted', zero_division=0)
+        bal_acc   = balanced_accuracy_score(acts, preds)
+        logger.debug(f"Threshold {threshold:.2f} | Precision: {precision:.3f}  Recall: {recall:.3f}  F1: {f1:.3f}  BalAcc: {bal_acc:.3f}")
     return    
  
 def main(target):
+    """Execute the full Bayesian Network training and evaluation pipeline.
 
+    Steps:
+    1. Initialise logging.
+    2. Load and merge all data sources into a single discretised DataFrame.
+    3. Stratified 80/20 train/test split.
+    4. Log feature-vs-outcome cross-tabulations for every predictor.
+    5. Oversample the training minority class.
+    6. Fit the expert model on the balanced training data.
+    7. Evaluate the expert model on the test set at threshold 0.30.
+    8. Fit the auto (Hill-Climb) model on the balanced training data.
+    9. Evaluate the auto model on the test set at threshold 0.30.
+
+    Parameters
+    ----------
+    target : str
+        Name of the target column — must be ``'LoanOutcome'``.
+
+    Returns
+    -------
+    test_df : pandas.DataFrame
+        Held-out test set (useful for interactive exploration after the run).
+    model : pgmpy.models.DiscreteBayesianNetwork
+        Fitted expert model.
+    target : str
+        Echoes the ``target`` parameter for convenience.
+    """
     setup_logging(logging.DEBUG)
     
     data_dir = "data/"
-    df = get_merged_data(data_dir)    
+    merged_df = get_merged_data(data_dir)
+
+    # Select only the discrete model columns for training/inference.
+    # merged_df also contains raw numeric/string source columns for diagnostics;
+    # those must be excluded before passing data to the Bayesian Network.
+    df = merged_df[MODEL_COLS].dropna(subset=[target]).copy()
+
     train_df, test_df = train_test_split(df, test_size=0.2, random_state=42, stratify=df[target])
     logger.debug(f"Train: {len(train_df)} rows, Test: {len(test_df)} rows")
     
@@ -628,32 +505,39 @@ def main(target):
         logger.debug(f"Feature vs LoanOutcome:\n{ct.to_string()}")
     
     train_bal = balance_training_data(train_df)
-    
+
+    # Evaluate which of the current direct parents of LoanOutcome are genuinely
+    # adding information vs. redundant with stronger parents.  Results are
+    # logged — use them to trim expert_list before the next run.
+    current_direct_parents = [ 'AmtGoodsPrice', 'ExtSource1Risk', 
+                               'ExtSource2Risk', 'ExtSource3Risk',
+                             ]
+    select_direct_parents(train_bal, target, current_direct_parents,
+                          max_parents=4, logger=logger)
+
     # Phase 2 — Define and Train the Expert Network
     # DEFINE THE DAG STRUCTURE (domain knowledge)
     # Each tuple is (parent, child) — "parent influences child"
-    
 
-    expert_list = [('PrevRejected',          'PriorLoanApproved'),
-                    ('PaymentHistory',        'PriorLoanApproved'),
-                    ('ContractStatus',        'PriorLoanApproved'),
-                    ('ActiveCredits',         'CreditProlonged'),
-                    ('MaxOverdue',            'CreditProlonged'),
-                    ('AmtCredit',             'AmtGoodsPrice'),
-                    ('ExtSource1Risk',        'LoanOutcome'),
-                    ('ExtSource2Risk',        'LoanOutcome'),
-                    ('ExtSource3Risk',        'LoanOutcome'),
-                    ('PriorLoanApproved',     'LoanOutcome'),
-                    ('CreditProlonged',       'LoanOutcome'),
-                    ('ContractStatus',       'LoanOutcome'),
-                    ('AmtGoodsPrice',         'LoanOutcome'), 
-                    ('AmtReqCreditBureauMon', 'LoanOutcome'),
-                    
-                ]
+    expert_list = [('ContractStatus',    'PriorLoanApproved'),
+                   ('PriorLoanApproved', 'PaymentHistory'),
+                   ('PaymentHistory',    'DPD'),
+                   ('AmtCredit',         'AmtGoodsPrice'),
+                   ('ExtSource3Risk',    'ActiveCredits'),
+                   ('ActiveCredits',     'MaxOverdue'),
+                   ('MaxOverdue',        'CreditProlonged'),
+                   ('OccupationType',    'IncomeType'),
+                   ('ExtSource1Risk',    'OccupationType'),
+                   ('AmtGoodsPrice',     'LoanOutcome'),
+                   ('ExtSource3Risk',    'LoanOutcome'),
+                   ('ExtSource1Risk',    'LoanOutcome'),
+                   ('ExtSource2Risk',    'LoanOutcome'),                   
+                  ]
 
+                
     model = create_expert_model(train_bal, expert_list)
     
-    acts1, preds1 = predict(test_df, model, target, default_threshold=.50, mname="Expert")
+    acts1, preds1 = predict(test_df, model, target, default_threshold=.30, mname="Expert")
         
     # Phase 2b — Define and Train the Auto Network
     # 
@@ -663,7 +547,7 @@ def main(target):
                           scoring_method='bic-d'    # alternative scoring method
                           )
     
-    acts1, preds1 = predict(test_df, model, target, default_threshold=.50, mname="Auto")
+    acts1, preds1 = predict(test_df, auto_model, target, default_threshold=.30, mname="Auto")
     #run_sweep(test_df, model, auto_model)
     
     return test_df, model, target

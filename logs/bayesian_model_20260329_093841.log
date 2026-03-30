@@ -1,0 +1,275 @@
+2026-03-29 09:38:41 | DEBUG | Logger initialized — level: DEBUG, file: logs/bayesian_model_20260329_093841.log
+2026-03-29 09:41:42 | DEBUG | Train: 246008 rows, Test: 61503 rows
+2026-03-29 09:41:42 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+IncomeType                      
+Stable        0.089413  0.910587
+Unstable      0.054811  0.945189
+2026-03-29 09:41:42 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome     Defaulted    Repaid
+OccupationType                     
+Laborer          0.103293  0.896707
+Professional     0.060985  0.939015
+Unknown          0.065867  0.934133
+2026-03-29 09:41:42 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome    Defaulted    Repaid
+IncomeBracket                     
+High            0.070868  0.929132
+Low             0.084711  0.915289
+Medium          0.085158  0.914842
+2026-03-29 09:41:42 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome     Defaulted    Repaid
+ExtSource1Risk                     
+High             0.109147  0.890853
+Low              0.037419  0.962581
+MedHigh          0.076378  0.923622
+Medium           0.055421  0.944579
+Unknown          0.085065  0.914935
+VeryHigh         0.184896  0.815104
+VeryLow          0.025452  0.974548
+2026-03-29 09:41:42 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome     Defaulted    Repaid
+ExtSource2Risk                     
+High             0.120787  0.879213
+Low              0.039598  0.960402
+MedHigh          0.091895  0.908105
+Medium           0.066845  0.933155
+Unknown          0.077922  0.922078
+VeryHigh         0.188662  0.811338
+VeryLow          0.017241  0.982759
+2026-03-29 09:41:42 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome     Defaulted    Repaid
+ExtSource3Risk                     
+High             0.128030  0.871970
+Low              0.037264  0.962736
+MedHigh          0.081857  0.918143
+Medium           0.052627  0.947373
+Unknown          0.094072  0.905928
+VeryHigh         0.207696  0.792304
+VeryLow          0.029603  0.970397
+2026-03-29 09:41:42 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+AmtCredit                       
+High          0.097969  0.902031
+Low           0.045491  0.954509
+Med           0.075769  0.924231
+MedHigh       0.071270  0.928730
+MedLow        0.071769  0.928231
+VeryLow       0.059635  0.940365
+2026-03-29 09:41:42 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome    Defaulted    Repaid
+AmtGoodsPrice                     
+High            0.067666  0.932334
+Low             0.057643  0.942357
+MedHigh         0.080128  0.919872
+Medium          0.083681  0.916319
+Unknown         0.089286  0.910714
+VeryHigh        0.120298  0.879702
+VeryLow         0.057080  0.942920
+2026-03-29 09:41:42 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome            Defaulted    Repaid
+AmtReqCreditBureauMon                     
+Medium                  0.076926  0.923074
+Unknown                 0.082053  0.917947
+VeryLow                 0.059493  0.940507
+2026-03-29 09:41:43 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome     Defaulted    Repaid
+PaymentHistory                     
+High             0.075975  0.924025
+Low              0.076700  0.923300
+Medium           0.115348  0.884652
+2026-03-29 09:41:43 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome        Defaulted    Repaid
+PriorLoanApproved                     
+No                  0.061300  0.938700
+Yes                 0.081888  0.918112
+2026-03-29 09:41:43 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome   Defaulted    Repaid
+PrevRejected                     
+Multiple       0.125231  0.874769
+None           0.070151  0.929849
+Once           0.087799  0.912201
+Twice          0.101704  0.898296
+2026-03-29 09:41:43 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome        Defaulted    Repaid
+CreditUtilization                     
+High                0.133357  0.866643
+Low                 0.075303  0.924697
+MaxedOut            0.194671  0.805329
+Medium              0.089599  0.910401
+2026-03-29 09:41:43 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+DPD                             
+High          0.091020  0.908980
+Low           0.100281  0.899719
+Medium        0.107766  0.892234
+None          0.076609  0.923391
+2026-03-29 09:41:43 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome     Defaulted    Repaid
+ContractStatus                     
+Active           0.081601  0.918399
+Inactive         0.066814  0.933186
+2026-03-29 09:41:43 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+DaysOverdue                     
+High          0.109091  0.890909
+Low           0.186885  0.813115
+Medium        0.176656  0.823344
+None          0.079844  0.920156
+2026-03-29 09:41:43 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+MaxOverdue                      
+High          0.098656  0.901344
+Low           0.068501  0.931499
+Medium        0.097699  0.902301
+None          0.076353  0.923647
+2026-03-29 09:41:43 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome  Defaulted    Repaid
+DebtLoad                        
+High          0.089202  0.910798
+Low           0.078068  0.921932
+Medium        0.078627  0.921373
+None          0.073207  0.926793
+2026-03-29 09:41:43 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome      Defaulted    Repaid
+CreditProlonged                     
+Many              0.047059  0.952941
+Never             0.080520  0.919480
+Once              0.090564  0.909436
+Several           0.079443  0.920557
+2026-03-29 09:41:43 | DEBUG | Feature vs LoanOutcome:
+LoanOutcome    Defaulted    Repaid
+ActiveCredits                     
+Few             0.077283  0.922717
+Many            0.106780  0.893220
+None            0.078578  0.921422
+One             0.071444  0.928556
+2026-03-29 09:41:44 | DEBUG | Resampling LoanOutcome distribution:
+LoanOutcome
+Repaid       226148
+Defaulted     79151
+2026-03-29 09:41:44 | DEBUG | ============================================================
+2026-03-29 09:41:44 | DEBUG | select_direct_parents: target=LoanOutcome, candidates=['AmtReqCreditBureauMon', 'AmtGoodsPrice', 'ExtSource1Risk', 'ExtSource2Risk', 'ExtSource3Risk', 'PaymentHistory', 'CreditProlonged'], max_parents=4
+2026-03-29 09:41:44 | DEBUG | ============================================================
+2026-03-29 09:41:52 | DEBUG | Marginal NMI with target:
+2026-03-29 09:41:52 | DEBUG |   ExtSource2Risk               0.0263
+2026-03-29 09:41:52 | DEBUG |   ExtSource3Risk               0.0251
+2026-03-29 09:41:52 | DEBUG |   ExtSource1Risk               0.0136
+2026-03-29 09:41:52 | DEBUG |   AmtGoodsPrice                0.0071
+2026-03-29 09:41:52 | DEBUG |   PaymentHistory               0.0043
+2026-03-29 09:41:52 | DEBUG |   AmtReqCreditBureauMon        0.0006
+2026-03-29 09:41:52 | DEBUG |   CreditProlonged              0.0002
+2026-03-29 09:41:52 | DEBUG | Round 1: select 'ExtSource2Risk'  conditional_nmi=0.0263  marginal=0.0263  retention=100.0%
+2026-03-29 09:41:59 | DEBUG | Round 2: select 'ExtSource3Risk'  conditional_nmi=0.0211  marginal=0.0251  retention=83.9%
+2026-03-29 09:42:10 | DEBUG | Round 3: select 'ExtSource1Risk'  conditional_nmi=0.0101  marginal=0.0136  retention=74.6%
+2026-03-29 09:42:22 | DEBUG | Round 4: select 'AmtGoodsPrice'  conditional_nmi=0.0057  marginal=0.0071  retention=79.9%
+2026-03-29 09:42:22 | DEBUG | 
+Residual signal in non-selected candidates (conditional on full selected set):
+2026-03-29 09:42:26 | DEBUG |   AmtReqCreditBureauMon        residual_nmi=0.0006  marginal=0.0006  retained=102.0%
+2026-03-29 09:42:31 | DEBUG |   PaymentHistory               residual_nmi=0.0040  marginal=0.0043  retained=93.2%
+2026-03-29 09:42:35 | DEBUG |   CreditProlonged              residual_nmi=0.0006  marginal=0.0002  retained=368.1%
+2026-03-29 09:42:35 | DEBUG | 
+Selected direct parents for 'LoanOutcome':
+ round         parent  marginal_nmi  conditional_nmi  retention_pct
+     1 ExtSource2Risk      0.026261         0.026261          100.0
+     2 ExtSource3Risk      0.025137         0.021078           83.9
+     3 ExtSource1Risk      0.013568         0.010120           74.6
+     4  AmtGoodsPrice      0.007101         0.005674           79.9
+2026-03-29 09:42:35 | DEBUG | create_expert_model df rows, cols: (305299, 21)
+2026-03-29 09:42:38 | DEBUG | Model valid:True
+2026-03-29 09:42:38 | DEBUG | Full Influence Model
+2026-03-29 09:42:38 | DEBUG | 
+========================================
+2026-03-29 09:42:38 | DEBUG |   Influence Map for: LoanOutcome
+2026-03-29 09:42:38 | DEBUG | ========================================
+2026-03-29 09:42:38 | DEBUG | Model CPS
+2026-03-29 09:42:42 | DEBUG | Model cpds:+------------------------+-----+--------------------------------+
+| AmtGoodsPrice          | ... | AmtGoodsPrice(VeryLow)         |
++------------------------+-----+--------------------------------+
+| AmtReqCreditBureauMon  | ... | AmtReqCreditBureauMon(VeryLow) |
++------------------------+-----+--------------------------------+
+| CreditProlonged        | ... | CreditProlonged(Several)       |
++------------------------+-----+--------------------------------+
+| ExtSource1Risk         | ... | ExtSource1Risk(VeryLow)        |
++------------------------+-----+--------------------------------+
+| ExtSource2Risk         | ... | ExtSource2Risk(VeryLow)        |
++------------------------+-----+--------------------------------+
+| ExtSource3Risk         | ... | ExtSource3Risk(VeryLow)        |
++------------------------+-----+--------------------------------+
+| PaymentHistory         | ... | PaymentHistory(Medium)         |
++------------------------+-----+--------------------------------+
+| LoanOutcome(Defaulted) | ... | 0.5                            |
++------------------------+-----+--------------------------------+
+| LoanOutcome(Repaid)    | ... | 0.5                            |
++------------------------+-----+--------------------------------+
+2026-03-29 09:42:42 | DEBUG | running predict test df rows, cols: (61503, 21)
+2026-03-29 09:43:03 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.999
+  mean:   0.226
+  median: 0.185
+  >0.20:  29232
+  >0.30:  17968
+  >0.40:  10609
+2026-03-29 09:43:04 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260329_094304.png
+2026-03-29 09:43:04 | DEBUG | Accuracy: 0.716
+2026-03-29 09:43:04 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.15      0.55      0.24      4965
+      Repaid       0.95      0.73      0.83     56538
+
+    accuracy                           0.72     61503
+   macro avg       0.55      0.64      0.53     61503
+weighted avg       0.88      0.72      0.78     61503
+
+2026-03-29 09:43:04 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         2744       2221
+  Repaid           15224      41314
+2026-03-29 09:43:04 | DEBUG | create_auto_model df rows, cols: (305299, 21)
+2026-03-29 09:43:23 | DEBUG | Structure search complete. Learned edges:
+[('IncomeType', 'OccupationType'), ('IncomeType', 'ExtSource1Risk'), ('IncomeType', 'ExtSource3Risk'), ('IncomeType', 'DebtLoad'), ('OccupationType', 'ExtSource1Risk'), ('OccupationType', 'LoanOutcome'), ('OccupationType', 'DebtLoad'), ('OccupationType', 'ContractStatus'), ('IncomeBracket', 'DebtLoad'), ('IncomeBracket', 'OccupationType'), ('IncomeBracket', 'ExtSource2Risk'), ('IncomeBracket', 'IncomeType'), ('IncomeBracket', 'ActiveCredits'), ('IncomeBracket', 'MaxOverdue'), ('ExtSource1Risk', 'ExtSource2Risk'), ('ExtSource2Risk', 'LoanOutcome'), ('ExtSource3Risk', 'LoanOutcome'), ('ExtSource3Risk', 'PrevRejected'), ('ExtSource3Risk', 'MaxOverdue'), ('ExtSource3Risk', 'AmtReqCreditBureauMon'), ('ExtSource3Risk', 'DaysOverdue'), ('ExtSource3Risk', 'ExtSource1Risk'), ('ExtSource3Risk', 'CreditUtilization'), ('AmtCredit', 'AmtGoodsPrice'), ('AmtCredit', 'IncomeBracket'), ('AmtCredit', 'ContractStatus'), ('AmtCredit', 'CreditUtilization'), ('AmtGoodsPrice', 'IncomeBracket'), ('AmtGoodsPrice', 'IncomeType'), ('AmtGoodsPrice', 'OccupationType'), ('AmtReqCreditBureauMon', 'ContractStatus'), ('PriorLoanApproved', 'PaymentHistory'), ('PriorLoanApproved', 'PrevRejected'), ('PrevRejected', 'DPD'), ('CreditUtilization', 'PriorLoanApproved'), ('CreditUtilization', 'PrevRejected'), ('DPD', 'PaymentHistory'), ('ContractStatus', 'PriorLoanApproved'), ('ContractStatus', 'DPD'), ('ContractStatus', 'PaymentHistory'), ('MaxOverdue', 'CreditProlonged'), ('MaxOverdue', 'DPD'), ('DebtLoad', 'ActiveCredits'), ('DebtLoad', 'ExtSource3Risk'), ('ActiveCredits', 'ExtSource3Risk'), ('ActiveCredits', 'MaxOverdue'), ('ActiveCredits', 'AmtReqCreditBureauMon'), ('ActiveCredits', 'CreditProlonged'), ('ActiveCredits', 'DaysOverdue')]
+2026-03-29 09:43:24 | DEBUG | Auto Model valid: True
+2026-03-29 09:43:24 | DEBUG | Full Influence Auto Model
+2026-03-29 09:43:24 | DEBUG | 
+========================================
+2026-03-29 09:43:24 | DEBUG |   Influence Map for: LoanOutcome
+2026-03-29 09:43:24 | DEBUG | ========================================
+2026-03-29 09:43:24 | DEBUG | Auto Model CPS
+2026-03-29 09:43:24 | DEBUG | Full Influence Auto Model: +------------------------+-----+-------------------------+
+| ExtSource2Risk         | ... | ExtSource2Risk(VeryLow) |
++------------------------+-----+-------------------------+
+| ExtSource3Risk         | ... | ExtSource3Risk(VeryLow) |
++------------------------+-----+-------------------------+
+| OccupationType         | ... | OccupationType(Unknown) |
++------------------------+-----+-------------------------+
+| LoanOutcome(Defaulted) | ... | 0.013888888888888892    |
++------------------------+-----+-------------------------+
+| LoanOutcome(Repaid)    | ... | 0.9861111111111112      |
++------------------------+-----+-------------------------+
+2026-03-29 09:43:24 | DEBUG | running predict test df rows, cols: (61503, 21)
+2026-03-29 09:43:52 | DEBUG | Predicted probability distribution:
+  min:    0.002
+  max:    0.729
+  mean:   0.238
+  median: 0.196
+  >0.20:  29279
+  >0.30:  16014
+  >0.40:  8082
+2026-03-29 09:43:52 | DEBUG | Probability distribution plot saved: logs/Auto_prob_dist_20260329_094352.png
+2026-03-29 09:43:52 | DEBUG | Accuracy: 0.748
+2026-03-29 09:43:53 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.17      0.55      0.26      4965
+      Repaid       0.95      0.77      0.85     56538
+
+    accuracy                           0.75     61503
+   macro avg       0.56      0.66      0.55     61503
+weighted avg       0.89      0.75      0.80     61503
+
+2026-03-29 09:43:53 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         2746       2219
+  Repaid           13268      43270
