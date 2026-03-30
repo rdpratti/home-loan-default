@@ -83,10 +83,19 @@ home-loan-default/
 
 ## Setup
 
+**Option A — restore exact environment from the provided yml file:**
+
+```bash
+conda env create -f home_conda_environment.yml
+conda activate home_credit
+```
+
+**Option B — create a minimal environment manually:**
+
 ```bash
 conda create -n home_credit python=3.11
 conda activate home_credit
-pip install pandas numpy scikit-learn pgmpy matplotlib
+pip install pandas numpy scikit-learn pgmpy matplotlib seaborn imbalanced-learn scipy statsmodels
 ```
 
 ## Usage
