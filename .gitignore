@@ -3,9 +3,6 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 
-# Jupyter - we only track .py files, not .ipynb
-*.ipynb
-
 # Data files (don't commit large datasets)
 *.csv
 *.pkl
