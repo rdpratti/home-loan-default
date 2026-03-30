@@ -648,7 +648,7 @@ def print_comparison_summary(
   ROC-AUC   : {auc:.4f}
 {'='*55}
   Compare against BN Expert:
-    F1=0.392  BalAcc=0.607  (threshold=0.50, 8 parents)
+    F1=0.26  BalAcc=0.660  (threshold=0.30, 4 parents)
 {'='*55}
 """
     print(summary)

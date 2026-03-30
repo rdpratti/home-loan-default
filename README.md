@@ -8,8 +8,8 @@ dataset.
 
 | Model | Threshold | Precision | Recall | F1 | BalAcc | ROC-AUC |
 |-------|-----------|-----------|--------|----|--------|---------|
-| BN Expert (4 parents) | 0.50 | 0.16 | 0.58 | 0.26 | 0.660 | — |
-| BN Auto (3 parents) | 0.50 | 0.17 | 0.55 | 0.26 | 0.659 | — |
+| BN Expert (4 parents) | 0.30 | 0.16 | 0.58 | 0.26 | 0.660 | — |
+| BN Auto (3 parents) | 0.30 | 0.17 | 0.55 | 0.26 | 0.659 | — |
 | Naive Bayes (20 features) | 0.60 | 0.18 | 0.57 | 0.27 | 0.670 | 0.734 |
 
 All models use the same discrete feature set and are evaluated on an 80/20
