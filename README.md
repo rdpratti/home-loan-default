@@ -108,11 +108,7 @@ home-loan-default/
 │   ├── graph_structure_discovery.py   # NMI-based BN parent selection
 │   └── home_credit_naive_bayes.py     # Categorical Naive Bayes baseline
 ├── home_credit_bayesian.py            # Bayesian Network pipeline (Expert + Auto)
-├── generate_exec_summary.py           # Generates docs/Executive_Summary.docx
-├── generate_feature_report.py         # Generates docs/Feature_Engineering_Report.docx
-├── generate_doc.py                    # Generates docs/graph_structure_discovery_session.docx
-├── combine_docs.py                    # Merges session docs into home_credit_bn_combined.docx
-└── inspect_docs.py                    # Utility to inspect Word document structure
+
 ```
 
 ## Setup
