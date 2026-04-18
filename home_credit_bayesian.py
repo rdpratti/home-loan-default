@@ -32,16 +32,19 @@ from pgmpy.estimators import (HillClimbSearch, BayesianEstimator, MaximumLikelih
 from pgmpy.inference import VariableElimination
 from sklearn.preprocessing import KBinsDiscretizer
 from imblearn.over_sampling import RandomOverSampler
+from tqdm import tqdm
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 from pgmpy.models import DiscreteBayesianNetwork
-from sklearn.metrics import (confusion_matrix, classification_report, 
-                             accuracy_score, ConfusionMatrixDisplay, f1_score, recall_score, 
-                             balanced_accuracy_score, precision_score)
+from sklearn.metrics import (confusion_matrix, classification_report,
+                             accuracy_score, ConfusionMatrixDisplay, f1_score, recall_score,
+                             balanced_accuracy_score, precision_score, brier_score_loss)
+from sklearn.calibration import calibration_curve
+from sklearn.isotonic import IsotonicRegression
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 import logging
-logging.getLogger('pgmpy').setLevel(logging.WARNING)
 import networkx as nx
 sys.path.insert(0, 'src')
 from data_prep import get_merged_data, MODEL_COLS
@@ -66,19 +69,30 @@ def setup_logging(level):
     """
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     log_file  = f'logs/bayesian_model_{timestamp}.log'
-    
+
     formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s',
                                    datefmt='%Y-%m-%d %H:%M:%S')
-    
-    fh = logging.FileHandler(log_file, mode='a')
+
+    fh = logging.FileHandler(log_file, mode='a', encoding='utf-8')
     fh.setFormatter(formatter)
-    logger.addHandler(fh)
-    
-    ch = logging.StreamHandler(sys.stdout)
+
+    ch = logging.StreamHandler(open(sys.stdout.fileno(), mode='w',
+                                    encoding='utf-8', closefd=False))
     ch.setFormatter(formatter)
-    logger.addHandler(ch)
-    
-    logger.setLevel(level)
+
+    # Attach handlers to the root logger so all module loggers
+    # (data_prep, graph_structure_discovery, etc.) write to the same
+    # file and console without needing their own handler setup.
+    root = logging.getLogger()
+    root.addHandler(fh)
+    root.addHandler(ch)
+    root.setLevel(level)
+
+    # Silence noisy third-party loggers that would otherwise flood the output
+    logging.getLogger('pgmpy').setLevel(logging.WARNING)
+    logging.getLogger('matplotlib').setLevel(logging.WARNING)
+    logging.getLogger('PIL').setLevel(logging.WARNING)
+
     logger.debug(f"Logger initialized — level: {logging.getLevelName(level)}, file: {log_file}")
     
     return 
@@ -304,7 +318,119 @@ def plot_probability_distribution(probs_list, threshold, model_name):
     return
 
 
-def predict(test_df, model, target, default_threshold=0.2, mname=None):
+def plot_reliability_diagram(probs, actuals, model_name, n_bins=10):
+    """Save a reliability (calibration) diagram comparing predicted probabilities to observed rates.
+
+    A perfectly calibrated model lies on the diagonal.  Points above the
+    diagonal mean the model under-predicts default probability; points below
+    mean it over-predicts.
+
+    Parameters
+    ----------
+    probs : list[float]
+        Raw (or calibrated) P(Defaulted) values from the inference engine.
+    actuals : list[str]
+        Ground-truth labels (``'Defaulted'`` or ``'Repaid'``).
+    model_name : str
+        Label used in the plot title and output filename.
+    n_bins : int, optional
+        Number of equal-width bins for the calibration curve.  Default 10.
+    """
+    true_labels = [1 if a == 'Defaulted' else 0 for a in actuals]
+    fraction_pos, mean_pred = calibration_curve(true_labels, probs,
+                                                n_bins=n_bins, strategy='uniform')
+
+    fig, ax = plt.subplots(figsize=(6, 6))
+    ax.plot(mean_pred, fraction_pos, 's-', label=model_name)
+    ax.plot([0, 1], [0, 1], 'k--', label='Perfectly calibrated')
+    ax.set_xlabel('Mean predicted probability')
+    ax.set_ylabel('Fraction of positives')
+    ax.set_title(f'{model_name} — Reliability Diagram')
+    ax.legend()
+
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    plot_path = f'logs/{model_name}_reliability_{timestamp}.png'
+    plt.tight_layout()
+    plt.savefig(plot_path)
+    plt.close()
+    logger.debug(f"Reliability diagram saved: {plot_path}")
+
+
+def calibrate_model(cal_df, model, target, method='isotonic'):
+    """Fit a post-hoc probability calibrator on a held-out calibration set.
+
+    Runs Variable-Elimination inference on ``cal_df`` (which must NOT have been
+    oversampled — it needs the true class proportions) to collect raw
+    P(Defaulted) scores, then fits a monotonic calibrator that maps those
+    scores to better-calibrated probabilities.
+
+    Two methods are supported:
+
+    - ``'isotonic'``  — non-parametric, more flexible, needs ≥ a few hundred
+      samples to avoid overfitting.
+    - ``'platt'``     — logistic regression (Platt scaling), smoother but
+      assumes a sigmoid relationship between raw score and true probability.
+
+    Parameters
+    ----------
+    cal_df : pandas.DataFrame
+        Held-out calibration split (unbalanced, real class proportions).
+    model : pgmpy.models.DiscreteBayesianNetwork
+        Fitted Bayesian Network.
+    target : str
+        Name of the target variable (``'LoanOutcome'``).
+    method : {'isotonic', 'platt'}, optional
+        Calibration method.  Default ``'isotonic'``.
+
+    Returns
+    -------
+    calibrator
+        Fitted ``IsotonicRegression`` or ``LogisticRegression`` object.
+        Pass this to ``predict()`` via the ``calibrator`` keyword argument.
+    """
+    infer        = VariableElimination(model)
+    dag_cols     = list(model.nodes())
+    feature_cols = [c for c in dag_cols if c != target]
+    cal_model_df = cal_df[dag_cols].copy().astype('object')
+
+    # Precompute valid states per feature so unknown values can be dropped rather
+    # than crashing inference.  Unobserved variables are marginalised by pgmpy.
+    model_states = {col: set(model.get_cpds(col).state_names[col]) for col in feature_cols}
+    _warned = set()
+
+    raw_probs, true_labels = [], []
+    for _, row in tqdm(cal_model_df.iterrows(), total=len(cal_model_df), desc="Calibrating"):
+        evidence = {}
+        for col in feature_cols:
+            val = row[col]
+            if val in model_states[col]:
+                evidence[col] = val
+            elif col not in _warned:
+                logger.debug(f"calibrate_model: dropping unknown state '{val}' for '{col}' "
+                             f"(known: {sorted(model_states[col])})")
+                _warned.add(col)
+        result   = infer.query([target], evidence=evidence, show_progress=False)
+        states   = result.state_names[target]
+        raw_probs.append(float(result.values[states.index('Defaulted')]))
+        true_labels.append(1 if row[target] == 'Defaulted' else 0)
+
+    raw_probs   = np.array(raw_probs)
+    true_labels = np.array(true_labels)
+
+    if method == 'isotonic':
+        calibrator = IsotonicRegression(out_of_bounds='clip')
+        calibrator.fit(raw_probs, true_labels)
+    else:  # platt scaling
+        calibrator = LogisticRegression()
+        calibrator.fit(raw_probs.reshape(-1, 1), true_labels)
+
+    n_defaults = true_labels.sum()
+    logger.debug(f"Calibrator ({method}) fitted on {len(true_labels)} samples "
+                 f"({n_defaults} defaults, {len(true_labels) - n_defaults} repaid)")
+    return calibrator
+
+
+def predict(test_df, model, target, default_threshold=0.2, mname=None, calibrator=None, plot_reliability=False):
     """Run Variable-Elimination inference on the test set and evaluate predictions.
 
     For each row in ``test_df``, queries the model with all non-target columns
@@ -347,26 +473,44 @@ def predict(test_df, model, target, default_threshold=0.2, mname=None):
     dag_cols     = list(model.nodes())
     test_model   = test_df[dag_cols].copy().astype('object')
     feature_cols = [col for col in dag_cols if col != target]
-    
+
+    # Precompute valid states per feature so unknown values can be dropped rather
+    # than crashing inference.  Unobserved variables are marginalised by pgmpy.
+    model_states = {col: set(model.get_cpds(col).state_names[col]) for col in feature_cols}
+    _warned = set()
+
     actuals    = []
     predictions = []
     probs_list = []
 
-    #sample_df   = test_df[test_df['LoanOutcome'] == 'Defaulted']
-    for _, row in test_df.iterrows():
-        # Build evidence from all non-target columns
-        evidence = {col: row[col] for col in feature_cols}
-    
+    for _, row in tqdm(test_model.iterrows(), total=len(test_model), desc=f"Predicting ({mname})"):
+        evidence = {}
+        for col in feature_cols:
+            val = row[col]
+            if val in model_states[col]:
+                evidence[col] = val
+            elif col not in _warned:
+                logger.debug(f"predict: dropping unknown state '{val}' for '{col}' "
+                             f"(known: {sorted(model_states[col])})")
+                _warned.add(col)
+
         # Query the network
         result = infer.query([target], evidence=evidence, show_progress=False)
         
         # Get probability of Defaulted specifically
         states = result.state_names[target]
         probs  = result.values
-        default_prob = probs[states.index('Defaulted')]
-        probs_list.append(default_prob)   # ← append each probability
+        default_prob = float(probs[states.index('Defaulted')])
 
-        default_prob = probs[states.index('Defaulted')]
+        # Apply post-hoc calibration if a calibrator was supplied
+        if calibrator is not None:
+            if isinstance(calibrator, IsotonicRegression):
+                default_prob = float(calibrator.predict([default_prob])[0])
+            else:  # LogisticRegression (Platt)
+                default_prob = float(calibrator.predict_proba([[default_prob]])[0, 1])
+
+        probs_list.append(default_prob)
+
         # Use threshold instead of argmax
         pred = 'Defaulted' if default_prob >= default_threshold else 'Repaid'
         #pred = result.state_names[target][np.argmax(result.values)]
@@ -375,7 +519,21 @@ def predict(test_df, model, target, default_threshold=0.2, mname=None):
         predictions.append(pred)
     
     # log after the loop
-    probs_array = np.array(probs_list)
+    probs_array  = np.array(probs_list)
+    true_binary  = np.array([1 if a == 'Defaulted' else 0 for a in actuals])
+
+    # Brier score (lower = better; 0 = perfect)
+    brier = brier_score_loss(true_binary, probs_array)
+
+    # Expected Calibration Error — 10 equal-width bins over [0, 1]
+    n_bins_ece = 10
+    bin_edges  = np.linspace(0, 1, n_bins_ece + 1)
+    bin_ids    = np.digitize(probs_array, bin_edges[1:-1])
+    ece        = 0.0
+    for b in range(n_bins_ece):
+        mask = bin_ids == b
+        if mask.sum() > 0:
+            ece += (mask.sum() / len(true_binary)) * abs(true_binary[mask].mean() - probs_array[mask].mean())
 
     logger.debug(f"Predicted probability distribution:\n"
                  f"  min:    {probs_array.min():.3f}\n"
@@ -384,12 +542,16 @@ def predict(test_df, model, target, default_threshold=0.2, mname=None):
                  f"  median: {np.median(probs_array):.3f}\n"
                  f"  >0.20:  {(probs_array >= 0.20).sum()}\n"
                  f"  >0.30:  {(probs_array >= 0.30).sum()}\n"
-                 f"  >0.40:  {(probs_array >= 0.40).sum()}")
+                 f"  >0.40:  {(probs_array >= 0.40).sum()}\n"
+                 f"  Brier:  {brier:.4f}\n"
+                 f"  ECE:    {ece:.4f}")
         
     plot_probability_distribution(probs_list, default_threshold, mname)
+    if plot_reliability:
+        plot_reliability_diagram(probs_list, actuals, mname)
     #create and print confusion matrix
     display_confusion_matrix(actuals, predictions)
-    return actuals, predictions  
+    return actuals, predictions
 
 def balance_training_data(train_df):
     """Oversample the minority class to reduce class imbalance before training.
@@ -412,12 +574,12 @@ def balance_training_data(train_df):
         Resampled training data with the same columns as ``train_df``.
     """
     #guaranteee 3/1 paidoff/defaulted
-    ros = RandomOverSampler(sampling_strategy=.35, random_state=42)
+    ros = RandomOverSampler(sampling_strategy=1.0, random_state=42)
     train_resampled, _ = ros.fit_resample(train_df, train_df['LoanOutcome'])
     logger.debug(f"Resampling LoanOutcome distribution:\n{train_resampled['LoanOutcome'].value_counts().to_string()}")
     return train_resampled
 
-def run_sweep(test_df, model, auto_model):
+def run_sweep(test_df, model, auto_model, expert_calibrator=None, auto_calibrator=None):
     """Evaluate both models across a range of decision thresholds.
 
     Iterates over a predefined list of probability thresholds for both the
@@ -426,8 +588,10 @@ def run_sweep(test_df, model, auto_model):
     operating point that best balances catching defaults (recall) against false
     alarms (1 − precision).
 
-    At the true default base rate (~20 %), a threshold near 0.30 tends to
-    maximise Balanced Accuracy; 0.20 tends to maximise F1.
+    When calibrators are supplied the threshold range covers 0.04–0.20, which
+    is where calibrated probabilities (mean ~0.08) carry useful signal.
+    Without calibrators the range covers 0.10–0.60 to match the inflated
+    raw probability distribution.
 
     Parameters
     ----------
@@ -437,27 +601,43 @@ def run_sweep(test_df, model, auto_model):
         Fitted expert Bayesian Network.
     auto_model : pgmpy.models.DiscreteBayesianNetwork
         Fitted auto (Hill-Climb) Bayesian Network.
+    expert_calibrator : calibrator object or None
+        Fitted calibrator for the expert model (from ``calibrate_model()``).
+    auto_calibrator : calibrator object or None
+        Fitted calibrator for the auto model (from ``calibrate_model()``).
     """
+    if expert_calibrator is not None:
+        thresholds = [0.04, 0.06, 0.08, 0.10, 0.12, 0.14, 0.16, 0.18, 0.20]
+    else:
+        thresholds = [0.10, 0.15, 0.20, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60]
+
     logger.debug("=== Expert Model Threshold Sweep ===")
-    for threshold in [0.10, 0.15, 0.20, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6]:
-    #for threshold in [0.40, 0.43, 0.45, 0.47, 0.48, 0.50, 0.52, 0.55]:
-        acts, preds = predict(test_df, model, 'LoanOutcome', default_threshold=threshold, mname = 'Expert')
+    for threshold in thresholds:
+        acts, preds = predict(test_df, model, 'LoanOutcome',
+                              default_threshold=threshold, mname='Expert',
+                              calibrator=expert_calibrator)
         precision = precision_score(acts, preds, pos_label='Defaulted', zero_division=0)
         recall    = recall_score(acts, preds,    pos_label='Defaulted', zero_division=0)
         f1        = f1_score(acts, preds,        pos_label='Defaulted', zero_division=0)
         bal_acc   = balanced_accuracy_score(acts, preds)
         logger.debug(f"Threshold {threshold:.2f} | Precision: {precision:.3f}  Recall: {recall:.3f}  F1: {f1:.3f}  BalAcc: {bal_acc:.3f}")
 
+    if auto_calibrator is not None:
+        thresholds = [0.04, 0.06, 0.08, 0.10, 0.12, 0.14, 0.16, 0.18, 0.20]
+    else:
+        thresholds = [0.10, 0.15, 0.20, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60]
+
     logger.debug("\n=== Auto Model Threshold Sweep ===")
-    for threshold in [0.10, 0.15, 0.20, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6]:
+    for threshold in thresholds:
         acts, preds = predict(test_df, auto_model, 'LoanOutcome',
-                              default_threshold=threshold, mname = 'Auto')
+                              default_threshold=threshold, mname='Auto',
+                              calibrator=auto_calibrator)
         precision = precision_score(acts, preds, pos_label='Defaulted', zero_division=0)
         recall    = recall_score(acts, preds,    pos_label='Defaulted', zero_division=0)
         f1        = f1_score(acts, preds,        pos_label='Defaulted', zero_division=0)
         bal_acc   = balanced_accuracy_score(acts, preds)
         logger.debug(f"Threshold {threshold:.2f} | Precision: {precision:.3f}  Recall: {recall:.3f}  F1: {f1:.3f}  BalAcc: {bal_acc:.3f}")
-    return    
+    return
  
 def main(target):
     """Execute the full Bayesian Network training and evaluation pipeline.
@@ -469,9 +649,9 @@ def main(target):
     4. Log feature-vs-outcome cross-tabulations for every predictor.
     5. Oversample the training minority class.
     6. Fit the expert model on the balanced training data.
-    7. Evaluate the expert model on the test set at threshold 0.30.
+    7. Evaluate the expert model on the test set at threshold 0.10.
     8. Fit the auto (Hill-Climb) model on the balanced training data.
-    9. Evaluate the auto model on the test set at threshold 0.30.
+    9. Evaluate the auto model on the test set at threshold 0.06.
 
     Parameters
     ----------
@@ -497,12 +677,14 @@ def main(target):
     # those must be excluded before passing data to the Bayesian Network.
     df = merged_df[MODEL_COLS].dropna(subset=[target]).copy()
 
-    train_df, test_df = train_test_split(df, test_size=0.2, random_state=42, stratify=df[target])
-    logger.debug(f"Train: {len(train_df)} rows, Test: {len(test_df)} rows")
+    train_val_df, test_df = train_test_split(df, test_size=0.2, random_state=42, stratify=df[target])
+    train_df, cal_df = train_test_split(train_val_df, test_size=0.15, random_state=42, stratify=train_val_df[target])
+    logger.debug(f"Train: {len(train_df)} rows, Test: {len(test_df)} rows, Calibrate: {len(cal_df)} rows")
     
-    for col in [c for c in train_df.columns if c != 'LoanOutcome']:
-        ct = pd.crosstab(train_df[col], train_df['LoanOutcome'], normalize='index')
-        logger.debug(f"Feature vs LoanOutcome:\n{ct.to_string()}")
+    #commented out 4/15/26 to return later
+    #for col in [c for c in train_df.columns if c != 'LoanOutcome']:
+    #    ct = pd.crosstab(train_df[col], train_df['LoanOutcome'], normalize='index')
+    #    logger.debug(f"Feature vs LoanOutcome:\n{ct.to_string()}")
     
     train_bal = balance_training_data(train_df)
 
@@ -531,24 +713,40 @@ def main(target):
                    ('AmtGoodsPrice',     'LoanOutcome'),
                    ('ExtSource3Risk',    'LoanOutcome'),
                    ('ExtSource1Risk',    'LoanOutcome'),
-                   ('ExtSource2Risk',    'LoanOutcome'),                   
+                   ('ExtSource2Risk',    'LoanOutcome'),
+                   ('AgeEducation',      'LoanOutcome'),
                   ]
 
-                
+
+
+    logger.info("Phase 1: fitting expert model...")
     model = create_expert_model(train_bal, expert_list)
-    
-    acts1, preds1 = predict(test_df, model, target, default_threshold=.30, mname="Expert")
-        
-    # Phase 2b — Define and Train the Auto Network
-    # 
+    logger.info("Phase 1: calibrating expert model...")
+    expert_calibrator = calibrate_model(cal_df, model, target)
+    logger.info("Phase 1: evaluating expert model on test set...")
+    _, _ = predict(test_df, model, target, default_threshold=.12,
+                   mname="Expert", calibrator=expert_calibrator, plot_reliability=True)
+    logger.info("Phase 1: complete.")
+
+    logger.info("Phase 2: fitting auto model (hill-climb search)...")
     auto_model = create_auto_model(df=train_bal,
-                          max_indegree=3,        # stricter — each node can have at most 2 parents
-                          max_iter=int(1e4),     # more search iterations
-                          scoring_method='bic-d'    # alternative scoring method
+                          max_indegree=3,
+                          max_iter=int(1e4),
+                          scoring_method='bic-d'
                           )
-    
-    acts1, preds1 = predict(test_df, auto_model, target, default_threshold=.30, mname="Auto")
-    #run_sweep(test_df, model, auto_model)
+    logger.info("Phase 2: calibrating auto model...")
+    auto_calibrator = calibrate_model(cal_df, auto_model, target)
+    logger.info("Phase 2: evaluating auto model on test set...")
+    _, _ = predict(test_df, auto_model, target, default_threshold=.12,
+                   mname="Auto", calibrator=auto_calibrator, plot_reliability=True)
+    logger.info("Phase 2: complete.")
+
+    #
+    logger.info("Phase 3: running threshold sweep...")
+    run_sweep(test_df, model, auto_model,
+              expert_calibrator=expert_calibrator,
+              auto_calibrator=auto_calibrator)
+    logger.info("Phase 3: complete. Pipeline finished.")
     
     return test_df, model, target
  
