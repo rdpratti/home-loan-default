@@ -1,0 +1,1647 @@
+2026-04-16 16:50:52 | DEBUG | Logger initialized — level: DEBUG, file: logs/bayesian_model_20260416_165052.log
+2026-04-16 16:50:52 | DEBUG | Running get_merged_data dir: data/
+2026-04-16 16:50:52 | DEBUG | Running get_app_data dir: data/
+2026-04-16 17:32:17 | DEBUG | KNN imputed 193,910 nulls in EXT_SOURCE_1 (min=0.089, max=0.904, mean=0.569)
+2026-04-16 17:32:17 | DEBUG | KNN imputed 668 nulls in EXT_SOURCE_2 (min=0.145, max=0.716, mean=0.501)
+2026-04-16 17:32:17 | DEBUG | KNN imputed 69,633 nulls in EXT_SOURCE_3 (min=0.117, max=0.815, mean=0.507)
+2026-04-16 17:32:18 | DEBUG | IncomeBracket distribution:
+IncomeBracket
+Medium    125959
+Low       121651
+High      108645
+2026-04-16 17:32:18 | DEBUG | LoanOutcome distribution:
+LoanOutcome
+Repaid       282686
+NaN           48744
+Defaulted     24825
+2026-04-16 17:32:18 | DEBUG | ExtSource1Risk distribution:
+ExtSource1Risk
+Medium      96793
+Low         94659
+MedHigh     78036
+High        49967
+VeryLow     21397
+VeryHigh    15403
+2026-04-16 17:32:18 | DEBUG | ExtSource2Risk distribution:
+ExtSource2Risk
+Medium      118625
+Low         101219
+MedHigh      62100
+High         42225
+VeryHigh     31404
+VeryLow        682
+2026-04-16 17:32:18 | DEBUG | ExtSource3Risk distribution:
+ExtSource3Risk
+Medium      111880
+MedHigh      88756
+Low          75733
+High         46787
+VeryHigh     22762
+VeryLow      10337
+2026-04-16 17:32:18 | DEBUG | AmtCredit distribution:
+AmtCredit
+High       149475
+MedLow      80397
+MedHigh     71349
+Med         20703
+VeryLow     18421
+Low         15910
+2026-04-16 17:32:18 | DEBUG | AmtGoodsPrice distribution:
+AmtGoodsPrice
+VeryLow     88132
+Medium      81641
+VeryHigh    70442
+MedHigh     69809
+High        35981
+Low          9972
+NaN           278
+2026-04-16 17:32:18 | DEBUG | AmtReqCreditBureauMon distribution:
+AmtReqCreditBureauMon
+NaN        312142
+Medium      33471
+VeryLow     10642
+2026-04-16 17:32:18 | DEBUG | Age distribution:
+Age
+MidAge    89072
+MidOld    89072
+Young     89068
+Senior    89043
+2026-04-16 17:32:18 | DEBUG | EmploymentYears distribution:
+EmploymentYears
+Short       72970
+MidShort    72890
+Long        72874
+MidLong     72873
+NaN         64648
+2026-04-16 17:32:18 | DEBUG | AgeEducation distribution:
+AgeEducation
+OldLowEdu       142467
+YoungLowEdu     126204
+YoungHighEdu     51936
+OldHighEdu       35648
+2026-04-16 17:32:18 | DEBUG | Running generate_bureau_summary dir: data/
+2026-04-16 17:33:48 | DEBUG | Running generate_install_summary dir: data/
+2026-04-16 17:33:59 | DEBUG | Running generate_util_summary dir: data/
+2026-04-16 17:34:05 | DEBUG | Running generate_pos_summary dir: data/
+2026-04-16 17:34:46 | DEBUG | Running generate_prev_summary dir: data/
+2026-04-16 17:35:58 | DEBUG | MODEL_COLS null counts BEFORE fills (labeled+test rows combined):
+LoanOutcome               48744
+AmtGoodsPrice               278
+AmtReqCreditBureauMon    312142
+PaymentHistory            16773
+PriorLoanApproved         17398
+PrevRejected              17398
+CreditUtilization        252699
+DPD                       19003
+ContractStatus            19003
+DaysOverdue               50444
+MaxOverdue               143284
+DebtLoad                  51721
+CreditProlonged           50444
+ActiveCredits             50444
+CreditAge                 50444
+ClosedVsActive            50444
+EmploymentYears           64648
+2026-04-16 17:35:58 | DEBUG | merged_df shape: (356255, 72)
+2026-04-16 17:35:58 | DEBUG | merged_df dtypes:
+SK_ID_CURR                     int64
+TARGET                       float64
+NAME_INCOME_TYPE                 str
+OCCUPATION_TYPE                  str
+AMT_INCOME_TOTAL             float64
+EXT_SOURCE_1                 float64
+EXT_SOURCE_2                 float64
+EXT_SOURCE_3                 float64
+AMT_CREDIT                   float64
+AMT_GOODS_PRICE              float64
+AMT_REQ_CREDIT_BUREAU_MON    float64
+AMT_ANNUITY                  float64
+CNT_FAM_MEMBERS              float64
+DAYS_BIRTH                     int64
+DAYS_EMPLOYED                  int64
+NAME_EDUCATION_TYPE              str
+NAME_FAMILY_STATUS               str
+CODE_GENDER                      str
+IncomeType                    object
+OccupationType                object
+IncomeBracket                 object
+LoanOutcome                   object
+ExtSource1Risk                object
+ExtSource2Risk                object
+ExtSource3Risk                object
+AmtCredit                     object
+AmtGoodsPrice                 object
+AmtReqCreditBureauMon         object
+Age                           object
+EmploymentYears               object
+AgeEducation                  object
+EducationLevel                object
+Gender                        object
+FamilyStatus                  object
+on_time_rate                 float64
+total_fills                  float64
+PaymentHistory                object
+avg_days_late                float64
+avg_shortfall                float64
+missed_payment_rate          float64
+recent_on_time_rate          float64
+payment_trend                float64
+prior_approved               float64
+prior_refused                float64
+prior_total                  float64
+PriorLoanApproved             object
+PrevRejected                  object
+days_last_app                float64
+avg_utilization              float64
+max_utilization              float64
+CreditUtilization             object
+max_dpd                      float64
+max_dpd_def                  float64
+active_contracts             float64
+DPD                           object
+ContractStatus                object
+max_days_overdue             float64
+max_overdue_amt              float64
+total_debt                   float64
+total_prolonged              float64
+active_credits               float64
+DaysOverdue                   object
+MaxOverdue                    object
+DebtLoad                      object
+CreditProlonged               object
+ActiveCredits                 object
+CreditAge                     object
+ClosedVsActive                object
+total_credits                float64
+overdue_cnt                  float64
+avg_credit_age               float64
+closed_credits               float64
+2026-04-16 17:35:58 | DEBUG | install_summary numeric cols by LoanOutcome:
+            avg_days_late                                                            avg_shortfall                                                                        missed_payment_rate                                                   on_time_rate                                                        payment_trend                                                                  recent_on_time_rate                                                total_fills                                                    
+                    count      mean       std  min  25%       50%   75%          max         count        mean          std  min  25%       50%         75%           max               count      mean       std  min  25%  50%  75%       max        count      mean       std  min       25%       50%  75%  max         count      mean       std       min       25%  50%       75%       max               count      mean       std  min    25%  50%  75%  max       count       mean        std  min   25%   50%   75%    max
+LoanOutcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+Defaulted         23875.0  1.338517  7.110834  0.0  0.0  0.139535  0.85   414.744361       23875.0  771.740879  1663.749556  0.0  0.0  6.813783  882.461429   42890.04375             23876.0  0.000027  0.000625  0.0  0.0  0.0  0.0  0.031915      23876.0  0.896501  0.137389  0.0  0.838710  0.950820  1.0  1.0       14467.0 -0.000257  0.130224 -0.968750 -0.016087  0.0  0.043478  0.750000             14467.0  0.912368  0.165415  0.0  0.875  1.0  1.0  1.0     23876.0  36.867691  38.733459  1.0  12.0  23.0  46.0  324.0
+Repaid           267760.0  1.041712  9.261258  0.0  0.0  0.031579  0.50  1885.386364      267760.0  568.301368  1466.098491  0.0  0.0  0.000000  531.215925  146145.90000            267767.0  0.000037  0.000764  0.0  0.0  0.0  0.0  0.078947     267767.0  0.926462  0.113891  0.0  0.892857  0.983607  1.0  1.0      165153.0  0.013759  0.111929 -0.984375  0.000000  0.0  0.044444  0.882353            165153.0  0.948284  0.129619  0.0  1.000  1.0  1.0  1.0    267767.0  40.002461  40.902990  1.0  12.0  25.0  51.0  372.0
+2026-04-16 17:35:58 | DEBUG | util_summary numeric cols by LoanOutcome:
+            avg_utilization                                                                       max_utilization                                                                 
+                      count      mean       std       min       25%       50%       75%       max           count      mean       std  min       25%       50%       75%       max
+LoanOutcome                                                                                                                                                                       
+Defaulted            7534.0  0.442385  0.355076 -0.058333  0.052905  0.437508  0.774029  1.398834          7534.0  0.772460  0.440224  0.0  0.446382  1.023947  1.058566   2.86418
+Repaid              79371.0  0.286150  0.314616 -0.065116  0.000000  0.166524  0.519791  2.138790         79371.0  0.610743  0.485328  0.0  0.000000  0.923634  1.042524  11.77751
+2026-04-16 17:35:58 | DEBUG | pos_summary numeric cols by LoanOutcome:
+            active_contracts                                                       max_dpd                                                    max_dpd_def                                                 
+                       count       mean        std  min   25%   50%   75%    max     count       mean         std  min  25%  50%  75%     max       count      mean        std  min  25%  50%  75%     max
+LoanOutcome                                                                                                                                                                                               
+Defaulted            23621.0  24.303289  21.460701  0.0  10.0  17.0  32.0  217.0   23621.0  18.145125  169.206597  0.0  0.0  0.0  0.0  3592.0     23621.0  2.452563  47.380668  0.0  0.0  0.0  0.0  3277.0
+Repaid              265823.0  27.253131  22.592099  0.0  11.0  21.0  36.0  271.0  265823.0  15.480162  151.660588  0.0  0.0  0.0  0.0  4231.0    265823.0  1.381415  28.646712  0.0  0.0  0.0  0.0  3373.0
+2026-04-16 17:35:58 | DEBUG | bureau_summary numeric cols by LoanOutcome:
+            active_credits                                               avg_credit_age                                                                            closed_credits                                                max_days_overdue                                                  max_overdue_amt                                                                   overdue_cnt                                              total_credits                                                total_debt                                                                                         total_prolonged                                             
+                     count      mean       std  min  25%  50%  75%   max          count         mean         std  min         25%          50%         75%     max          count      mean       std  min  25%  50%  75%    max            count      mean        std  min  25%  50%  75%     max           count          mean            std  min  25%  50%      75%          max       count      mean       std  min  25%  50%  75%  max         count      mean       std  min  25%  50%  75%    max      count           mean           std         min         25%       50%        75%           max           count      mean       std  min  25%  50%  75%  max
+LoanOutcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+Defaulted          20368.0  2.471328  2.092045  0.0  1.0  2.0  3.0  32.0        20368.0   908.412036  556.700978  4.0  476.958333   835.333333  1247.28125  2922.0        20368.0  3.122987  3.354674  0.0  1.0  2.0  4.0   52.0          20368.0  6.464356  99.418786  0.0  0.0  0.0  0.0  2776.0         14423.0  12599.596089  207365.312961  0.0  0.0  0.0  8309.79   16950010.5     20368.0  0.033140  0.232676  0.0  0.0  0.0  0.0  7.0       20368.0  5.622545  4.650278  1.0  2.0  4.0  8.0   55.0    20368.0  680978.726472  1.322658e+06  -387310.50  21517.0425  256288.5  801445.50  3.510852e+07         20368.0  0.043941  0.245715  0.0  0.0  0.0  0.0  6.0
+Repaid            243123.0  2.021952  1.755527  0.0  1.0  2.0  3.0  20.0       243123.0  1097.677429  561.419326  0.0  683.126984  1067.000000  1446.50000  2922.0       243123.0  3.513135  3.382148  0.0  1.0  3.0  5.0  108.0         243123.0  4.631043  88.224679  0.0  0.0  0.0  0.0  2792.0        169463.0   9123.586625  378497.608951  0.0  0.0  0.0  5670.00  115987185.0    243123.0  0.012467  0.118972  0.0  0.0  0.0  0.0  6.0      243123.0  5.556056  4.354275  1.0  2.0  4.0  8.0  116.0   243123.0  637271.677587  1.657346e+06 -6981558.21      0.0000  162063.0  648164.25  3.344983e+08        243123.0  0.040185  0.247289  0.0  0.0  0.0  0.0  9.0
+2026-04-16 17:35:59 | DEBUG | prev_summary numeric cols by LoanOutcome:
+            days_last_app                                                           prior_approved                                               prior_refused                                               prior_total                                              
+                    count        mean         std     min    25%    50%    75%  max          count      mean       std  min  25%  50%  75%   max         count      mean       std  min  25%  50%  75%   max       count      mean       std  min  25%  50%  75%   max
+LoanOutcome                                                                                                                                                                                                                                                           
+Defaulted         23845.0 -451.162130  527.639703 -2922.0 -547.0 -272.0 -137.0 -2.0        23845.0  2.820004  2.024836  0.0  1.0  2.0  4.0  19.0       23845.0  1.234557  2.347559  0.0  0.0  0.0  2.0  58.0     23845.0  5.131474  4.601421  1.0  2.0  4.0  7.0  60.0
+Repaid           267212.0 -483.463093  541.213552 -2922.0 -599.0 -302.0 -148.0 -1.0       267212.0  3.064443  2.132118  0.0  1.0  3.0  4.0  27.0      267212.0  0.808167  1.754153  0.0  0.0  0.0  1.0  68.0    267212.0  4.832646  4.103169  1.0  2.0  4.0  6.0  73.0
+2026-04-16 17:35:59 | DEBUG | === Ratio Feature IV Screening ===
+2026-04-16 17:35:59 | DEBUG | 
+DebtToIncome  IV=0.0080  [Useless]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q4        5662     71215 -0.0994           0.0024
+   Q1        5742     71206 -0.0853           0.0018
+   Q2        6700     70118  0.0844           0.0018
+   Q3        6721     70147  0.0871           0.0020
+2026-04-16 17:36:00 | DEBUG | 
+AnnuityToIncome  IV=0.0052  [Useless]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q1        5606     71270 -0.1102           0.0029
+   Q2        6060     70828 -0.0261           0.0002
+   Q3        6562     70300  0.0610           0.0010
+   Q4        6597     70276  0.0667           0.0011
+2026-04-16 17:36:00 | DEBUG | 
+LoanToValue  IV=0.0668  [Weak]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q2        3231     48788 -0.2822           0.0120
+   Q1        7318    101152 -0.1938           0.0122
+   Q3        6674     75355  0.0085           0.0000
+   Q4        7581     57134  0.4127           0.0426
+2026-04-16 17:36:00 | DEBUG | 
+IncomePerFamilyMember  IV=0.0034  [Useless]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q4        5421     66210 -0.0701           0.0011
+   Q3        6337     74251 -0.0286           0.0002
+   Q2        6313     71930 -0.0006           0.0000
+   Q1        6754     70293  0.0899           0.0021
+2026-04-16 17:36:00 | DEBUG | === End Ratio Feature IV Screening ===
+2026-04-16 17:36:01 | DEBUG | === Demographic Feature IV Screening ===
+2026-04-16 17:36:01 | DEBUG | 
+Age  IV=0.0794  [Weak]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q4        4085     72778 -0.4476           0.0416
+   Q3        5632     71255 -0.1053           0.0027
+   Q2        6656     70221  0.0764           0.0015
+   Q1        8452     68432  0.3410           0.0336
+2026-04-16 17:36:01 | DEBUG | 
+EmploymentYears  IV=0.0779  [Weak]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q4        3414     59619 -0.4276           0.0314
+   Q3        4933     58047 -0.0328           0.0002
+   Q2        6421     56647  0.2552           0.0149
+   Q1        7067     55989  0.3628           0.0314
+2026-04-16 17:36:01 | DEBUG | === End Demographic Feature IV Screening ===
+2026-04-16 17:36:02 | DEBUG | === App Categorical Feature IV Screening ===
+2026-04-16 17:36:02 | DEBUG | 
+Gender  IV=0.0386  [Weak]
+state  n_defaults  n_repaid     woe  iv_contribution
+    F       14170    188278 -0.1543           0.0147
+    M       10655     94404  0.2509           0.0239
+2026-04-16 17:36:02 | DEBUG | 
+EducationLevel  IV=0.0509  [Weak]
+                        state  n_defaults  n_repaid     woe  iv_contribution
+              Academic degree           3       161 -1.5503           0.0007
+             Higher education        4009     70854 -0.4396           0.0392
+            Incomplete higher         872      9405  0.0543           0.0001
+Secondary / secondary special       19524    198867  0.1115           0.0093
+              Lower secondary         417      3399  0.3343           0.0016
+2026-04-16 17:36:03 | DEBUG | 
+FamilyStatus  IV=0.0217  [Weak]
+               state  n_defaults  n_repaid     woe  iv_contribution
+             Unknown           0         2 -1.9566           0.0000
+               Widow         937     15151 -0.3507           0.0056
+             Married       14850    181582 -0.0712           0.0031
+           Separated        1620     18150  0.0162           0.0000
+Single / not married        4457     40987  0.2137           0.0074
+      Civil marriage        2961     26814  0.2291           0.0056
+2026-04-16 17:36:03 | DEBUG | === End App Categorical Feature IV Screening ===
+2026-04-16 17:36:03 | DEBUG | === Installment Feature IV Screening ===
+2026-04-16 17:36:04 | DEBUG | 
+AvgDaysLate  IV=0.0432  [Weak]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q1        9882    136086 -0.1901           0.0158
+   Q2        6168     66607  0.0531           0.0007
+   Q3        7825     65067  0.3144           0.0267
+2026-04-16 17:36:04 | DEBUG | 
+AvgShortfall  IV=0.0302  [Weak]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q1       16160    202566 -0.0960           0.0063
+   Q2        7715     65194  0.2983           0.0239
+2026-04-16 17:36:04 | DEBUG | 
+MissedPaymentRate  IV=0.0002  [Useless]
+state  n_defaults  n_repaid    woe  iv_contribution
+   Q1       23876    267767 0.0152           0.0002
+2026-04-16 17:36:04 | DEBUG | 
+PaymentTrend  IV=0.0030  [Useless]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q2        1807     24508 -0.1748           0.0024
+   Q3        3577     41263 -0.0130           0.0000
+   Q1        9083     99382  0.0399           0.0006
+2026-04-16 17:36:04 | DEBUG | === End Installment Feature IV Screening ===
+2026-04-16 17:36:05 | DEBUG | === Bureau Feature IV Screening ===
+2026-04-16 17:36:05 | DEBUG | 
+OverdueRatio  IV=0.0019  [Useless]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q1       20368    243123 -0.0471           0.0019
+2026-04-16 17:36:05 | DEBUG | 
+CreditAge  IV=0.1034  [Medium]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q4        3377     62494 -0.4856           0.0413
+   Q3        4017     61854 -0.3018           0.0172
+   Q2        5214     60662 -0.0215           0.0001
+   Q1        7760     58113  0.4191           0.0448
+2026-04-16 17:36:06 | DEBUG | 
+ClosedVsActive  IV=0.0774  [Weak]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q4        3407     60175 -0.4389           0.0332
+   Q3        3948     60423 -0.2957           0.0162
+   Q2        5592     61789  0.0301           0.0002
+   Q1        7421     60736  0.3303           0.0278
+2026-04-16 17:36:06 | DEBUG | === End Bureau Feature IV Screening ===
+2026-04-16 17:36:06 | DEBUG | === Previous Application Feature IV Screening ===
+2026-04-16 17:36:06 | DEBUG | 
+ApprovalRate  IV=0.0478  [Weak]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q3        9693    128447 -0.1516           0.0097
+   Q2        5555     69784 -0.0982           0.0023
+   Q1        8597     68981  0.3501           0.0358
+2026-04-16 17:36:07 | DEBUG | 
+DaysSinceLastApp  IV=0.0078  [Useless]
+state  n_defaults  n_repaid     woe  iv_contribution
+   Q4        5342     67369 -0.1021           0.0024
+   Q3        5629     67147 -0.0465           0.0005
+   Q2        6359     66285  0.0884           0.0019
+   Q1        6515     66411  0.1107           0.0030
+2026-04-16 17:36:07 | DEBUG | === End Previous Application Feature IV Screening ===
+2026-04-16 17:36:11 | DEBUG | === Pairwise Interaction IV Screening (pool size=10, pairs=45) ===
+2026-04-16 17:36:11 | DEBUG | Pool members: Age=0.0794, EmploymentYears=0.0779, CreditAge=0.1034, ClosedVsActive=0.0774, LoanToValue=0.0668, EducationLevel=0.0509, Gender=0.0386, AvgDaysLate=0.0432, AvgShortfall=0.0302, ApprovalRate=0.0478
+2026-04-16 17:36:38 | DEBUG | 
+All pairs ranked by combined IV:
+Pair                                   IV_A    IV_B     Sum  Combined    Lift Rating
+2026-04-16 17:36:38 | DEBUG |   CreditAge x LoanToValue              0.1034  0.0668  0.1702    0.1581 -0.0121  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   Age x EducationLevel                 0.0794  0.0509  0.1303    0.1523 +0.0220  [Medium] *** SYNERGY
+2026-04-16 17:36:38 | DEBUG |   CreditAge x AvgDaysLate              0.1034  0.0432  0.1466    0.1473 +0.0007  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   Age x CreditAge                      0.0794  0.1034  0.1828    0.1470 -0.0358  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   Age x LoanToValue                    0.0794  0.0668  0.1462    0.1464 +0.0002  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   CreditAge x EducationLevel           0.1034  0.0509  0.1543    0.1420 -0.0123  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   EmploymentYears x EducationLevel     0.0779  0.0509  0.1288    0.1391 +0.0103  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   CreditAge x ApprovalRate             0.1034  0.0478  0.1512    0.1347 -0.0165  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   Age x ClosedVsActive                 0.0794  0.0774  0.1568    0.1337 -0.0231  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   CreditAge x Gender                   0.1034  0.0386  0.1420    0.1330 -0.0090  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   EmploymentYears x LoanToValue        0.0779  0.0668  0.1447    0.1317 -0.0130  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   ClosedVsActive x LoanToValue         0.0774  0.0668  0.1442    0.1308 -0.0134  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   Age x ApprovalRate                   0.0794  0.0478  0.1272    0.1289 +0.0017  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   CreditAge x AvgShortfall             0.1034  0.0302  0.1336    0.1280 -0.0056  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   EmploymentYears x CreditAge          0.0779  0.1034  0.1813    0.1275 -0.0538  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   CreditAge x ClosedVsActive           0.1034  0.0774  0.1808    0.1274 -0.0534  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   Age x AvgDaysLate                    0.0794  0.0432  0.1226    0.1241 +0.0015  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   ClosedVsActive x EducationLevel      0.0774  0.0509  0.1283    0.1195 -0.0088  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   EmploymentYears x AvgDaysLate        0.0779  0.0432  0.1211    0.1176 -0.0035  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   EmploymentYears x ApprovalRate       0.0779  0.0478  0.1257    0.1176 -0.0081  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   ClosedVsActive x ApprovalRate        0.0774  0.0478  0.1252    0.1144 -0.0108  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   ClosedVsActive x AvgDaysLate         0.0774  0.0432  0.1206    0.1132 -0.0074  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   LoanToValue x EducationLevel         0.0668  0.0509  0.1177    0.1127 -0.0050  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   EmploymentYears x ClosedVsActive     0.0779  0.0774  0.1553    0.1126 -0.0427  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   Age x AvgShortfall                   0.0794  0.0302  0.1096    0.1104 +0.0008  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   Age x Gender                         0.0794  0.0386  0.1180    0.1101 -0.0079  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   LoanToValue x Gender                 0.0668  0.0386  0.1054    0.1081 +0.0027  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   ClosedVsActive x Gender              0.0774  0.0386  0.1160    0.1069 -0.0091  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   LoanToValue x ApprovalRate           0.0668  0.0478  0.1146    0.1069 -0.0077  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   LoanToValue x AvgDaysLate            0.0668  0.0432  0.1100    0.1047 -0.0053  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   EmploymentYears x AvgShortfall       0.0779  0.0302  0.1081    0.1039 -0.0042  [Medium] 
+2026-04-16 17:36:38 | DEBUG |   Age x EmploymentYears                0.0794  0.0779  0.1573    0.0992 -0.0581  [Weak] 
+2026-04-16 17:36:38 | DEBUG |   ClosedVsActive x AvgShortfall        0.0774  0.0302  0.1076    0.0991 -0.0085  [Weak] 
+2026-04-16 17:36:38 | DEBUG |   EmploymentYears x Gender             0.0779  0.0386  0.1165    0.0977 -0.0188  [Weak] 
+2026-04-16 17:36:38 | DEBUG |   AvgDaysLate x ApprovalRate           0.0432  0.0478  0.0910    0.0952 +0.0042  [Weak] 
+2026-04-16 17:36:38 | DEBUG |   EducationLevel x ApprovalRate        0.0509  0.0478  0.0987    0.0932 -0.0055  [Weak] 
+2026-04-16 17:36:38 | DEBUG |   LoanToValue x AvgShortfall           0.0668  0.0302  0.0970    0.0925 -0.0045  [Weak] 
+2026-04-16 17:36:38 | DEBUG |   EducationLevel x Gender              0.0509  0.0386  0.0895    0.0894 -0.0001  [Weak] 
+2026-04-16 17:36:38 | DEBUG |   Gender x ApprovalRate                0.0386  0.0478  0.0864    0.0872 +0.0008  [Weak] 
+2026-04-16 17:36:38 | DEBUG |   EducationLevel x AvgDaysLate         0.0509  0.0432  0.0941    0.0858 -0.0083  [Weak] 
+2026-04-16 17:36:38 | DEBUG |   Gender x AvgDaysLate                 0.0386  0.0432  0.0818    0.0836 +0.0018  [Weak] 
+2026-04-16 17:36:38 | DEBUG |   AvgShortfall x ApprovalRate          0.0302  0.0478  0.0780    0.0793 +0.0013  [Weak] 
+2026-04-16 17:36:38 | DEBUG |   EducationLevel x AvgShortfall        0.0509  0.0302  0.0811    0.0740 -0.0071  [Weak] 
+2026-04-16 17:36:38 | DEBUG |   Gender x AvgShortfall                0.0386  0.0302  0.0688    0.0699 +0.0011  [Weak] 
+2026-04-16 17:36:38 | DEBUG |   AvgDaysLate x AvgShortfall           0.0432  0.0302  0.0734    0.0466 -0.0268  [Weak] 
+2026-04-16 17:36:38 | DEBUG | 
+Detailed WoE breakdown for top 20 pairs:
+2026-04-16 17:36:38 | DEBUG | 
+CreditAge x LoanToValue  IV=0.1581  lift=-0.0121  (16 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q4        2510     12746  0.8076           0.0452
+Q1 | Q3        1982     14763  0.4245           0.0117
+Q2 | Q4        1485     12413  0.3092           0.0049
+Q1 | Q1        2434     21928  0.2343           0.0048
+Q3 | Q4        1166     11886  0.1107           0.0005
+Q4 | Q3         963     17012 -0.4391           0.0094
+Q3 | Q1        1154     22094 -0.5196           0.0165
+Q3 | Q2         551     10894 -0.5517           0.0090
+Q4 | Q1         902     21600 -0.7433           0.0298
+Q4 | Q2         478     11911 -0.7831           0.0179
+2026-04-16 17:36:38 | DEBUG | 
+Age x EducationLevel  IV=0.1523  lift=+0.0220  (20 states, top/bottom 5 by WoE)
+                             state  n_defaults  n_repaid     woe  iv_contribution
+              Q1 | Lower secondary         108       562  0.7831           0.0019
+              Q2 | Lower secondary         133       809  0.6270           0.0016
+Q1 | Secondary / secondary special        6195     39597  0.5775           0.0632
+              Q3 | Lower secondary          58       443  0.3994           0.0003
+Q2 | Secondary / secondary special        5321     48173  0.2293           0.0101
+              Q2 | Academic degree           2        42 -0.6120           0.0000
+             Q4 | Higher education         551     13127 -0.7382           0.0179
+              Q1 | Academic degree           1        34 -1.0939           0.0001
+              Q4 | Academic degree           0        40 -4.9523           0.0007
+              Q3 | Academic degree           0        45 -5.0701           0.0008
+2026-04-16 17:36:38 | DEBUG | 
+CreditAge x AvgDaysLate  IV=0.1473  lift=+0.0007  (12 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q3        2128     11890  0.7120           0.0311
+Q1 | Q2        1846     12613  0.5108           0.0152
+Q2 | Q3        1623     13957  0.2808           0.0045
+Q1 | Q1        3478     30218  0.2705           0.0090
+Q2 | Q2        1447     14582  0.1222           0.0008
+Q3 | Q2        1111     15429 -0.1985           0.0020
+Q2 | Q1        1966     29002 -0.2589           0.0061
+Q4 | Q2         839     15563 -0.4880           0.0104
+Q3 | Q1        1386     28455 -0.5894           0.0264
+Q4 | Q1        1144     28129 -0.7698           0.0411
+2026-04-16 17:36:38 | DEBUG | 
+Age x CreditAge  IV=0.1470  lift=-0.0358  (16 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q1        3489     22426  0.5719           0.0350
+Q2 | Q1        1807     12611  0.4896           0.0138
+Q3 | Q1        1475     11407  0.3869           0.0074
+Q1 | Q2        1597     15558  0.1560           0.0015
+Q2 | Q2        1503     15299  0.1122           0.0007
+Q3 | Q3        1058     17615 -0.3799           0.0075
+Q4 | Q2         871     14939 -0.4096           0.0073
+Q3 | Q4         932     17951 -0.5256           0.0136
+Q4 | Q3         781     17062 -0.6515           0.0188
+Q4 | Q4         707     19054 -0.8615           0.0335
+2026-04-16 17:36:38 | DEBUG | 
+Age x LoanToValue  IV=0.1464  lift=+0.0002  (16 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q4        2634     14647  0.7168           0.0389
+Q2 | Q4        2132     14787  0.4958           0.0166
+Q1 | Q3        1985     15362  0.3862           0.0099
+Q3 | Q4        1804     14885  0.3221           0.0064
+Q1 | Q2        1100     10085  0.2167           0.0019
+Q3 | Q1        1538     24512 -0.3362           0.0083
+Q4 | Q3        1322     22244 -0.3904           0.0099
+Q3 | Q2         696     12262 -0.4364           0.0067
+Q4 | Q1        1144     22553 -0.5489           0.0185
+Q4 | Q2         603     15138 -0.7906           0.0231
+2026-04-16 17:36:38 | DEBUG | 
+CreditAge x EducationLevel  IV=0.1420  lift=-0.0123  (20 states, top/bottom 5 by WoE)
+                             state  n_defaults  n_repaid     woe  iv_contribution
+              Q1 | Lower secondary         131       754  0.6823           0.0018
+Q1 | Secondary / secondary special        6161     40331  0.5536           0.0584
+              Q2 | Lower secondary          94       739  0.3705           0.0004
+            Q1 | Incomplete higher         320      2726  0.2902           0.0009
+Q2 | Secondary / secondary special        4042     42258  0.0854           0.0011
+             Q3 | Higher education         767     16365 -0.6279           0.0170
+             Q4 | Higher education         647     16221 -0.7892           0.0247
+              Q2 | Academic degree           1        37 -1.1784           0.0001
+              Q1 | Academic degree           0        29 -4.6307           0.0005
+              Q4 | Academic degree           0        38 -4.9010           0.0007
+2026-04-16 17:36:38 | DEBUG | 
+EmploymentYears x EducationLevel  IV=0.1391  lift=+0.0103  (20 states, top/bottom 5 by WoE)
+                             state  n_defaults  n_repaid     woe  iv_contribution
+              Q1 | Lower secondary         109       541  0.8304           0.0021
+              Q2 | Lower secondary          92       509  0.7218           0.0014
+Q1 | Secondary / secondary special        5395     36727  0.5144           0.0450
+              Q3 | Lower secondary          64       473  0.4323           0.0004
+Q2 | Secondary / secondary special        5054     38196  0.4099           0.0281
+             Q3 | Higher education         851     15795 -0.4886           0.0106
+             Q4 | Higher education         568     16209 -0.9187           0.0317
+              Q3 | Academic degree           1        30 -0.9687           0.0001
+              Q1 | Academic degree           0        35 -4.8188           0.0006
+              Q4 | Academic degree           0        43 -5.0246           0.0008
+2026-04-16 17:36:38 | DEBUG | 
+CreditAge x ApprovalRate  IV=0.1347  lift=-0.0165  (12 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q1        3069     16642  0.7419           0.0480
+Q2 | Q1        1873     15551  0.3159           0.0065
+Q1 | Q2        1525     12746  0.3093           0.0051
+Q1 | Q3        2858     25296  0.2520           0.0065
+Q3 | Q1        1292     14870 -0.0107           0.0000
+Q2 | Q3        1857     26551 -0.2276           0.0044
+Q3 | Q2        1018     16438 -0.3493           0.0060
+Q3 | Q3        1572     27586 -0.4325           0.0148
+Q4 | Q2         851     16601 -0.5383           0.0132
+Q4 | Q3        1382     28980 -0.6106           0.0286
+2026-04-16 17:36:38 | DEBUG | 
+Age x ClosedVsActive  IV=0.1337  lift=-0.0231  (16 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q1        2890     18446  0.5789           0.0296
+Q2 | Q1        1863     14564  0.3761           0.0088
+Q1 | Q2        1635     14101  0.2779           0.0044
+Q3 | Q1        1627     14509  0.2445           0.0035
+Q2 | Q2        1624     16118  0.1374           0.0012
+Q4 | Q2         981     15465 -0.3253           0.0049
+Q3 | Q3         934     15514 -0.3775           0.0065
+Q3 | Q4         795     15711 -0.5513           0.0130
+Q4 | Q3         706     16590 -0.7245           0.0219
+Q4 | Q4         620     17452 -0.9050           0.0333
+2026-04-16 17:36:38 | DEBUG | 
+CreditAge x Gender  IV=0.1330  lift=-0.0090  (8 states, top/bottom 5 by WoE)
+ state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | M        3297     19748  0.6424           0.0404
+Q1 | F        4463     38365  0.2812           0.0124
+Q2 | M        2111     19617  0.2033           0.0032
+Q3 | M        1627     19752 -0.0640           0.0003
+Q2 | F        3103     41042 -0.1497           0.0030
+Q4 | M        1511     20989 -0.1987           0.0027
+Q3 | F        2390     42101 -0.4363           0.0230
+Q4 | F        1866     41505 -0.6695           0.0480
+2026-04-16 17:36:38 | DEBUG | 
+EmploymentYears x LoanToValue  IV=0.1317  lift=-0.0130  (16 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q4        2365     12571  0.7619           0.0387
+Q2 | Q4        2026     12220  0.6355           0.0244
+Q1 | Q3        1758     13765  0.3745           0.0083
+Q3 | Q4        1528     12107  0.3627           0.0068
+Q2 | Q3        1624     14053  0.2745           0.0043
+Q3 | Q1        1459     21208 -0.2441           0.0040
+Q3 | Q2         633      9788 -0.3060           0.0028
+Q4 | Q3         985     16027 -0.3569           0.0061
+Q4 | Q1        1010     21380 -0.6200           0.0217
+Q4 | Q2         481     10734 -0.6728           0.0125
+2026-04-16 17:36:38 | DEBUG | 
+ClosedVsActive x LoanToValue  IV=0.1308  lift=-0.0134  (16 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q4        2420     13564  0.7088           0.0351
+Q2 | Q4        1651     12779  0.3861           0.0082
+Q1 | Q3        1951     16117  0.3210           0.0069
+Q1 | Q1        2227     22193  0.1334           0.0015
+Q4 | Q4        1057     11066  0.0840           0.0003
+Q4 | Q3         906     15738 -0.4223           0.0081
+Q3 | Q1        1222     21905 -0.4537           0.0128
+Q3 | Q2         529     10491 -0.5548           0.0088
+Q4 | Q1         919     21073 -0.7000           0.0263
+Q4 | Q2         522     12246 -0.7228           0.0161
+2026-04-16 17:36:38 | DEBUG | 
+Age x ApprovalRate  IV=0.1289  lift=+0.0017  (12 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q1        2851     16905  0.6525           0.0359
+Q2 | Q1        2316     16697  0.4571           0.0156
+Q3 | Q1        2088     17380  0.3134           0.0071
+Q1 | Q2        1808     15759  0.2673           0.0046
+Q1 | Q3        3459     31423  0.2259           0.0064
+Q4 | Q1        1342     17999 -0.1637           0.0016
+Q3 | Q2        1276     17864 -0.2066           0.0024
+Q3 | Q3        2057     32363 -0.3233           0.0102
+Q4 | Q2         960     18441 -0.5229           0.0139
+Q4 | Q3        1580     32481 -0.5907           0.0303
+2026-04-16 17:36:38 | DEBUG | 
+CreditAge x AvgShortfall  IV=0.1280  lift=-0.0056  (8 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q2        2163     12515  0.6771           0.0290
+Q1 | Q1        5289     42206  0.3556           0.0227
+Q2 | Q2        1592     13878  0.2672           0.0040
+Q3 | Q2        1388     14651  0.0758           0.0003
+Q2 | Q1        3444     43663 -0.1074           0.0017
+Q4 | Q2        1139     15249 -0.1619           0.0013
+Q3 | Q1        2513     44388 -0.4390           0.0245
+Q4 | Q1        2071     43848 -0.6202           0.0445
+2026-04-16 17:36:38 | DEBUG | 
+EmploymentYears x CreditAge  IV=0.1275  lift=-0.0538  (16 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q1        2553     15343  0.6391           0.0310
+Q2 | Q1        2450     15674  0.5766           0.0249
+Q3 | Q1        1329     10533  0.3624           0.0059
+Q1 | Q2        1235     10818  0.2623           0.0030
+Q2 | Q2        1233     12618  0.1068           0.0005
+Q2 | Q4         673      9918 -0.2579           0.0021
+Q3 | Q3         915     13864 -0.2856           0.0035
+Q3 | Q4         686     12227 -0.4480           0.0070
+Q4 | Q3         815     16832 -0.5954           0.0159
+Q4 | Q4         627     17288 -0.8843           0.0317
+2026-04-16 17:36:38 | DEBUG | 
+CreditAge x ClosedVsActive  IV=0.1274  lift=-0.0534  (16 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q1        4872     32493  0.5350           0.0435
+Q1 | Q2        1612     12840  0.3574           0.0070
+Q1 | Q3         666      5859  0.2580           0.0016
+Q2 | Q2        1933     19572  0.1175           0.0010
+Q2 | Q1        1519     15524  0.1082           0.0007
+Q2 | Q4         623     10560 -0.3978           0.0049
+Q3 | Q3        1200     20942 -0.4269           0.0110
+Q3 | Q4         758     14624 -0.5273           0.0112
+Q4 | Q3         943     18616 -0.5502           0.0153
+Q4 | Q4        1416     28070 -0.5544           0.0234
+2026-04-16 17:36:38 | DEBUG | 
+Age x AvgDaysLate  IV=0.1241  lift=+0.0015  (12 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q3        2594     15322  0.6564           0.0330
+Q2 | Q3        2155     16615  0.3900           0.0109
+Q1 | Q2        1932     15092  0.3769           0.0092
+Q3 | Q3        1777     16579  0.1993           0.0026
+Q1 | Q1        3577     33605  0.1923           0.0048
+Q4 | Q3        1299     16551 -0.1124           0.0007
+Q2 | Q1        2531     33151 -0.1400           0.0021
+Q3 | Q1        2178     33732 -0.3076           0.0097
+Q4 | Q2        1000     17033 -0.4027           0.0080
+Q4 | Q1        1596     35598 -0.6723           0.0414
+2026-04-16 17:36:38 | DEBUG | 
+ClosedVsActive x EducationLevel  IV=0.1195  lift=-0.0088  (20 states, top/bottom 5 by WoE)
+                             state  n_defaults  n_repaid     woe  iv_contribution
+              Q1 | Lower secondary         117       748  0.5773           0.0012
+Q1 | Secondary / secondary special        5815     41539  0.4663           0.0407
+              Q2 | Lower secondary          90       649  0.4569           0.0006
+            Q1 | Incomplete higher         289      2531  0.2625           0.0007
+Q2 | Secondary / secondary special        4332     42476  0.1496           0.0036
+              Q2 | Academic degree           2        48 -0.7456           0.0001
+              Q4 | Academic degree           1        24 -0.7456           0.0000
+             Q4 | Higher education         552     13868 -0.7913           0.0212
+              Q3 | Academic degree           0        34 -4.7898           0.0006
+              Q1 | Academic degree           0        35 -4.8188           0.0006
+2026-04-16 17:36:38 | DEBUG | 
+EmploymentYears x AvgDaysLate  IV=0.1176  lift=-0.0035  (12 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q3        2102     12089  0.6831           0.0286
+Q2 | Q3        1982     12438  0.5958           0.0214
+Q1 | Q2        1605     11933  0.4263           0.0096
+Q2 | Q2        1559     13393  0.2818           0.0043
+Q3 | Q3        1637     14226  0.2703           0.0042
+Q3 | Q2        1345     14647  0.0446           0.0001
+Q4 | Q3        1140     14188 -0.0889           0.0004
+Q3 | Q1        1818     26708 -0.2547           0.0054
+Q4 | Q2         950     14730 -0.3087           0.0043
+Q4 | Q1        1229     27906 -0.6902           0.0340
+2026-04-16 17:36:38 | DEBUG | 
+EmploymentYears x ApprovalRate  IV=0.1176  lift=-0.0081  (12 states, top/bottom 5 by WoE)
+  state  n_defaults  n_repaid     woe  iv_contribution
+Q1 | Q1        2482     14553  0.6638           0.0322
+Q2 | Q1        2367     14786  0.6004           0.0258
+Q3 | Q1        1701     13738  0.3435           0.0068
+Q1 | Q3        2852     24870  0.2668           0.0072
+Q1 | Q2        1338     12085  0.2317           0.0026
+Q4 | Q1        1107     13156 -0.0427           0.0001
+Q3 | Q2        1219     15442 -0.1066           0.0006
+Q3 | Q3        1878     26398 -0.2106           0.0037
+Q4 | Q2         842     15189 -0.4601           0.0091
+Q4 | Q3        1355     28165 -0.6018           0.0271
+2026-04-16 17:36:38 | DEBUG | === End Pairwise Interaction IV Screening ===
+2026-04-16 17:36:39 | DEBUG | Train: 209106 rows, Test: 61503 rows, Calibrate: 36902 rows
+2026-04-16 17:36:41 | DEBUG | Resampling LoanOutcome distribution:
+LoanOutcome
+Repaid       192225
+Defaulted     67278
+2026-04-16 17:36:41 | DEBUG | ============================================================
+2026-04-16 17:36:41 | DEBUG | select_direct_parents: target=LoanOutcome, candidates=['AmtGoodsPrice', 'ExtSource1Risk', 'ExtSource2Risk', 'ExtSource3Risk'], max_parents=4
+2026-04-16 17:36:41 | DEBUG | ============================================================
+2026-04-16 17:36:46 | DEBUG | Marginal NMI with target:
+2026-04-16 17:36:46 | DEBUG |   ExtSource3Risk               0.0268
+2026-04-16 17:36:46 | DEBUG |   ExtSource2Risk               0.0263
+2026-04-16 17:36:46 | DEBUG |   ExtSource1Risk               0.0177
+2026-04-16 17:36:46 | DEBUG |   AmtGoodsPrice                0.0072
+2026-04-16 17:36:46 | DEBUG | Round 1: select 'ExtSource3Risk'  conditional_nmi=0.0268  marginal=0.0268  retention=100.0%
+2026-04-16 17:36:50 | DEBUG | Round 2: select 'ExtSource2Risk'  conditional_nmi=0.0211  marginal=0.0263  retention=80.2%
+2026-04-16 17:36:55 | DEBUG | Round 3: select 'ExtSource1Risk'  conditional_nmi=0.0108  marginal=0.0177  retention=60.8%
+2026-04-16 17:36:59 | DEBUG | Round 4: select 'AmtGoodsPrice'  conditional_nmi=0.0053  marginal=0.0072  retention=73.7%
+2026-04-16 17:36:59 | DEBUG | 
+Residual signal in non-selected candidates (conditional on full selected set):
+2026-04-16 17:36:59 | DEBUG | 
+Selected direct parents for 'LoanOutcome':
+ round         parent  marginal_nmi  conditional_nmi  retention_pct
+     1 ExtSource3Risk      0.026836         0.026836          100.0
+     2 ExtSource2Risk      0.026260         0.021063           80.2
+     3 ExtSource1Risk      0.017711         0.010767           60.8
+     4  AmtGoodsPrice      0.007219         0.005318           73.7
+2026-04-16 17:36:59 | INFO | Phase 1: fitting expert model...
+2026-04-16 17:36:59 | DEBUG | create_expert_model df rows, cols: (259503, 29)
+2026-04-16 17:37:00 | DEBUG | Model valid:True
+2026-04-16 17:37:00 | DEBUG | Full Influence Model
+2026-04-16 17:37:00 | DEBUG | 
+========================================
+2026-04-16 17:37:00 | DEBUG |   Influence Map for: LoanOutcome
+2026-04-16 17:37:00 | DEBUG | ========================================
+2026-04-16 17:37:00 | DEBUG | Full chain:
+  AmtGoodsPrice ──→ LoanOutcome  [DIRECT]
+  ExtSource3Risk ──→ LoanOutcome  [DIRECT]
+  ExtSource1Risk ──→ LoanOutcome  [DIRECT]
+  ExtSource2Risk ──→ LoanOutcome  [DIRECT]
+  AgeEducation ──→ LoanOutcome  [DIRECT]
+  AmtCredit → AmtGoodsPrice → LoanOutcome  [INDIRECT]
+2026-04-16 17:37:00 | DEBUG | Model CPS
+2026-04-16 17:37:00 | DEBUG | Model cpds:+------------------------+-----+---------------------------+
+| AgeEducation           | ... | AgeEducation(YoungLowEdu) |
++------------------------+-----+---------------------------+
+| AmtGoodsPrice          | ... | AmtGoodsPrice(VeryLow)    |
++------------------------+-----+---------------------------+
+| ExtSource1Risk         | ... | ExtSource1Risk(VeryLow)   |
++------------------------+-----+---------------------------+
+| ExtSource2Risk         | ... | ExtSource2Risk(VeryLow)   |
++------------------------+-----+---------------------------+
+| ExtSource3Risk         | ... | ExtSource3Risk(VeryLow)   |
++------------------------+-----+---------------------------+
+| LoanOutcome(Defaulted) | ... | 0.5                       |
++------------------------+-----+---------------------------+
+| LoanOutcome(Repaid)    | ... | 0.5                       |
++------------------------+-----+---------------------------+
+2026-04-16 17:37:00 | INFO | Phase 1: calibrating expert model...
+2026-04-16 17:37:20 | DEBUG | Calibrator (isotonic) fitted on 36902 samples (2979 defaults, 33923 repaid)
+2026-04-16 17:37:20 | INFO | Phase 1: evaluating expert model on test set...
+2026-04-16 17:37:20 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:37:59 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.420
+  mean:   0.080
+  median: 0.068
+  >0.20:  3035
+  >0.30:  344
+  >0.40:  258
+  Brier:  0.0707
+  ECE:    0.0029
+2026-04-16 17:38:03 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260416_173802.png
+2026-04-16 17:38:03 | DEBUG | Reliability diagram saved: logs/Expert_reliability_20260416_173803.png
+2026-04-16 17:38:03 | DEBUG | Accuracy: 0.793
+2026-04-16 17:38:04 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.18      0.45      0.26      4965
+      Repaid       0.94      0.82      0.88     56538
+
+    accuracy                           0.79     61503
+   macro avg       0.56      0.64      0.57     61503
+weighted avg       0.88      0.79      0.83     61503
+
+2026-04-16 17:38:04 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         2255       2710
+  Repaid           10048      46490
+2026-04-16 17:38:04 | INFO | Phase 1: complete.
+2026-04-16 17:38:04 | INFO | Phase 2: fitting auto model (hill-climb search)...
+2026-04-16 17:38:04 | DEBUG | create_auto_model df rows, cols: (259503, 29)
+2026-04-16 17:38:46 | DEBUG | Structure search complete. Learned edges:
+[('IncomeType', 'OccupationType'), ('IncomeType', 'EmploymentYears'), ('IncomeType', 'CreditUtilization'), ('OccupationType', 'Gender'), ('IncomeBracket', 'Gender'), ('IncomeBracket', 'AgeEducation'), ('IncomeBracket', 'DebtLoad'), ('IncomeBracket', 'ExtSource2Risk'), ('IncomeBracket', 'Age'), ('IncomeBracket', 'IncomeType'), ('IncomeBracket', 'MaxOverdue'), ('IncomeBracket', 'ActiveCredits'), ('ExtSource1Risk', 'Age'), ('ExtSource1Risk', 'ExtSource2Risk'), ('ExtSource1Risk', 'Gender'), ('ExtSource1Risk', 'AgeEducation'), ('ExtSource1Risk', 'LoanOutcome'), ('ExtSource2Risk', 'LoanOutcome'), ('ExtSource3Risk', 'LoanOutcome'), ('ExtSource3Risk', 'ExtSource1Risk'), ('ExtSource3Risk', 'PrevRejected'), ('ExtSource3Risk', 'DaysOverdue'), ('AmtCredit', 'AmtGoodsPrice'), ('AmtCredit', 'IncomeBracket'), ('AmtCredit', 'DebtLoad'), ('AmtCredit', 'PriorLoanApproved'), ('AmtGoodsPrice', 'IncomeBracket'), ('AmtGoodsPrice', 'ExtSource1Risk'), ('AmtGoodsPrice', 'FamilyStatus'), ('AmtGoodsPrice', 'CreditAge'), ('AmtReqCreditBureauMon', 'PriorLoanApproved'), ('PaymentHistory', 'ContractStatus'), ('PaymentHistory', 'DPD'), ('PaymentHistory', 'CreditUtilization'), ('PriorLoanApproved', 'PaymentHistory'), ('PriorLoanApproved', 'ContractStatus'), ('PriorLoanApproved', 'PrevRejected'), ('PrevRejected', 'CreditUtilization'), ('PrevRejected', 'DPD'), ('PrevRejected', 'PaymentHistory'), ('CreditUtilization', 'ContractStatus'), ('ContractStatus', 'DPD'), ('MaxOverdue', 'ExtSource3Risk'), ('MaxOverdue', 'CreditProlonged'), ('MaxOverdue', 'ClosedVsActive'), ('MaxOverdue', 'PaymentHistory'), ('DebtLoad', 'ActiveCredits'), ('DebtLoad', 'CreditAge'), ('ActiveCredits', 'ClosedVsActive'), ('ActiveCredits', 'ExtSource3Risk'), ('ActiveCredits', 'MaxOverdue'), ('ActiveCredits', 'AmtReqCreditBureauMon'), ('ActiveCredits', 'PrevRejected'), ('ActiveCredits', 'CreditProlonged'), ('ActiveCredits', 'DaysOverdue'), ('CreditAge', 'ClosedVsActive'), ('CreditAge', 'ExtSource3Risk'), ('CreditAge', 'AmtReqCreditBureauMon'), ('CreditAge', 'EmploymentYears'), ('CreditAge', 'Age'), ('CreditAge', 'MaxOverdue'), ('CreditAge', 'ActiveCredits'), ('ClosedVsActive', 'AmtReqCreditBureauMon'), ('Age', 'AgeEducation'), ('Age', 'IncomeType'), ('Age', 'EmploymentYears'), ('Age', 'FamilyStatus'), ('Age', 'EducationLevel'), ('EmploymentYears', 'OccupationType'), ('AgeEducation', 'EducationLevel'), ('AgeEducation', 'OccupationType'), ('AgeEducation', 'PriorLoanApproved'), ('AgeEducation', 'ExtSource2Risk'), ('EducationLevel', 'IncomeType'), ('Gender', 'FamilyStatus')]
+2026-04-16 17:38:48 | DEBUG | Auto Model valid: True
+2026-04-16 17:38:48 | DEBUG | Full Influence Auto Model
+2026-04-16 17:38:48 | DEBUG | 
+========================================
+2026-04-16 17:38:48 | DEBUG |   Influence Map for: LoanOutcome
+2026-04-16 17:38:48 | DEBUG | ========================================
+2026-04-16 17:38:48 | DEBUG | Full chain:
+  ExtSource2Risk ──→ LoanOutcome  [DIRECT]
+  ExtSource1Risk ──→ LoanOutcome  [DIRECT]
+  ExtSource3Risk ──→ LoanOutcome  [DIRECT]
+  Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtGoodsPrice → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  CreditAge → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  CreditAge → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → AmtGoodsPrice → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → IncomeBracket → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  AmtCredit → DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ActiveCredits → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → Age → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → AgeEducation → ExtSource2Risk → LoanOutcome  [INDIRECT]
+  DebtLoad → CreditAge → ActiveCredits → MaxOverdue → ExtSource3Risk → ExtSource1Risk → LoanOutcome  [INDIRECT]
+2026-04-16 17:38:48 | DEBUG | Auto Model CPS
+2026-04-16 17:38:48 | DEBUG | Full Influence Auto Model: +------------------------+-----+-------------------------+
+| ExtSource1Risk         | ... | ExtSource1Risk(VeryLow) |
++------------------------+-----+-------------------------+
+| ExtSource2Risk         | ... | ExtSource2Risk(VeryLow) |
++------------------------+-----+-------------------------+
+| ExtSource3Risk         | ... | ExtSource3Risk(VeryLow) |
++------------------------+-----+-------------------------+
+| LoanOutcome(Defaulted) | ... | 0.023809523809523815    |
++------------------------+-----+-------------------------+
+| LoanOutcome(Repaid)    | ... | 0.9761904761904763      |
++------------------------+-----+-------------------------+
+2026-04-16 17:38:48 | INFO | Phase 2: calibrating auto model...
+2026-04-16 17:39:24 | DEBUG | Calibrator (isotonic) fitted on 36902 samples (2979 defaults, 33923 repaid)
+2026-04-16 17:39:24 | INFO | Phase 2: evaluating auto model on test set...
+2026-04-16 17:39:24 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:40:30 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.436
+  mean:   0.080
+  median: 0.066
+  >0.20:  3308
+  >0.30:  714
+  >0.40:  225
+  Brier:  0.0702
+  ECE:    0.0023
+2026-04-16 17:40:31 | DEBUG | Probability distribution plot saved: logs/Auto_prob_dist_20260416_174031.png
+2026-04-16 17:40:31 | DEBUG | Reliability diagram saved: logs/Auto_reliability_20260416_174031.png
+2026-04-16 17:40:31 | DEBUG | Accuracy: 0.801
+2026-04-16 17:40:31 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.19      0.45      0.27      4965
+      Repaid       0.95      0.83      0.88     56538
+
+    accuracy                           0.80     61503
+   macro avg       0.57      0.64      0.58     61503
+weighted avg       0.88      0.80      0.83     61503
+
+2026-04-16 17:40:31 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         2230       2735
+  Repaid            9520      47018
+2026-04-16 17:40:31 | INFO | Phase 2: complete.
+2026-04-16 17:40:31 | INFO | Phase 3: running threshold sweep...
+2026-04-16 17:40:31 | DEBUG | === Expert Model Threshold Sweep ===
+2026-04-16 17:40:31 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:41:07 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.420
+  mean:   0.080
+  median: 0.068
+  >0.20:  3035
+  >0.30:  344
+  >0.40:  258
+  Brier:  0.0707
+  ECE:    0.0029
+2026-04-16 17:41:08 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260416_174108.png
+2026-04-16 17:41:08 | DEBUG | Accuracy: 0.354
+2026-04-16 17:41:08 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.10      0.88      0.18      4965
+      Repaid       0.97      0.31      0.47     56538
+
+    accuracy                           0.35     61503
+   macro avg       0.53      0.59      0.32     61503
+weighted avg       0.90      0.35      0.44     61503
+
+2026-04-16 17:41:08 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         4363        602
+  Repaid           39107      17431
+2026-04-16 17:41:09 | DEBUG | Threshold 0.04 | Precision: 0.100  Recall: 0.879  F1: 0.180  BalAcc: 0.594
+2026-04-16 17:41:09 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:41:37 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.420
+  mean:   0.080
+  median: 0.068
+  >0.20:  3035
+  >0.30:  344
+  >0.40:  258
+  Brier:  0.0707
+  ECE:    0.0029
+2026-04-16 17:41:37 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260416_174137.png
+2026-04-16 17:41:37 | DEBUG | Accuracy: 0.497
+2026-04-16 17:41:37 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.12      0.80      0.20      4965
+      Repaid       0.96      0.47      0.63     56538
+
+    accuracy                           0.50     61503
+   macro avg       0.54      0.63      0.42     61503
+weighted avg       0.90      0.50      0.60     61503
+
+2026-04-16 17:41:37 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         3962       1003
+  Repaid           29957      26581
+2026-04-16 17:41:38 | DEBUG | Threshold 0.06 | Precision: 0.117  Recall: 0.798  F1: 0.204  BalAcc: 0.634
+2026-04-16 17:41:38 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:42:07 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.420
+  mean:   0.080
+  median: 0.068
+  >0.20:  3035
+  >0.30:  344
+  >0.40:  258
+  Brier:  0.0707
+  ECE:    0.0029
+2026-04-16 17:42:07 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260416_174207.png
+2026-04-16 17:42:07 | DEBUG | Accuracy: 0.639
+2026-04-16 17:42:07 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.14      0.66      0.23      4965
+      Repaid       0.96      0.64      0.76     56538
+
+    accuracy                           0.64     61503
+   macro avg       0.55      0.65      0.50     61503
+weighted avg       0.89      0.64      0.72     61503
+
+2026-04-16 17:42:08 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         3292       1673
+  Repaid           20548      35990
+2026-04-16 17:42:08 | DEBUG | Threshold 0.08 | Precision: 0.138  Recall: 0.663  F1: 0.229  BalAcc: 0.650
+2026-04-16 17:42:08 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:42:37 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.420
+  mean:   0.080
+  median: 0.068
+  >0.20:  3035
+  >0.30:  344
+  >0.40:  258
+  Brier:  0.0707
+  ECE:    0.0029
+2026-04-16 17:42:37 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260416_174237.png
+2026-04-16 17:42:37 | DEBUG | Accuracy: 0.744
+2026-04-16 17:42:37 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.16      0.54      0.25      4965
+      Repaid       0.95      0.76      0.85     56538
+
+    accuracy                           0.74     61503
+   macro avg       0.56      0.65      0.55     61503
+weighted avg       0.89      0.74      0.80     61503
+
+2026-04-16 17:42:38 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         2659       2306
+  Repaid           13469      43069
+2026-04-16 17:42:38 | DEBUG | Threshold 0.10 | Precision: 0.165  Recall: 0.536  F1: 0.252  BalAcc: 0.649
+2026-04-16 17:42:38 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:43:06 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.420
+  mean:   0.080
+  median: 0.068
+  >0.20:  3035
+  >0.30:  344
+  >0.40:  258
+  Brier:  0.0707
+  ECE:    0.0029
+2026-04-16 17:43:06 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260416_174306.png
+2026-04-16 17:43:07 | DEBUG | Accuracy: 0.793
+2026-04-16 17:43:07 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.18      0.45      0.26      4965
+      Repaid       0.94      0.82      0.88     56538
+
+    accuracy                           0.79     61503
+   macro avg       0.56      0.64      0.57     61503
+weighted avg       0.88      0.79      0.83     61503
+
+2026-04-16 17:43:07 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         2255       2710
+  Repaid           10048      46490
+2026-04-16 17:43:07 | DEBUG | Threshold 0.12 | Precision: 0.183  Recall: 0.454  F1: 0.261  BalAcc: 0.638
+2026-04-16 17:43:07 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:43:37 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.420
+  mean:   0.080
+  median: 0.068
+  >0.20:  3035
+  >0.30:  344
+  >0.40:  258
+  Brier:  0.0707
+  ECE:    0.0029
+2026-04-16 17:43:37 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260416_174337.png
+2026-04-16 17:43:37 | DEBUG | Accuracy: 0.851
+2026-04-16 17:43:37 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.21      0.32      0.26      4965
+      Repaid       0.94      0.90      0.92     56538
+
+    accuracy                           0.85     61503
+   macro avg       0.58      0.61      0.59     61503
+weighted avg       0.88      0.85      0.86     61503
+
+2026-04-16 17:43:37 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         1573       3392
+  Repaid            5773      50765
+2026-04-16 17:43:38 | DEBUG | Threshold 0.14 | Precision: 0.214  Recall: 0.317  F1: 0.256  BalAcc: 0.607
+2026-04-16 17:43:38 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:44:07 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.420
+  mean:   0.080
+  median: 0.068
+  >0.20:  3035
+  >0.30:  344
+  >0.40:  258
+  Brier:  0.0707
+  ECE:    0.0029
+2026-04-16 17:44:07 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260416_174407.png
+2026-04-16 17:44:07 | DEBUG | Accuracy: 0.856
+2026-04-16 17:44:07 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.22      0.30      0.25      4965
+      Repaid       0.94      0.91      0.92     56538
+
+    accuracy                           0.86     61503
+   macro avg       0.58      0.60      0.59     61503
+weighted avg       0.88      0.86      0.87     61503
+
+2026-04-16 17:44:07 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         1485       3480
+  Repaid            5347      51191
+2026-04-16 17:44:08 | DEBUG | Threshold 0.16 | Precision: 0.217  Recall: 0.299  F1: 0.252  BalAcc: 0.602
+2026-04-16 17:44:08 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:44:37 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.420
+  mean:   0.080
+  median: 0.068
+  >0.20:  3035
+  >0.30:  344
+  >0.40:  258
+  Brier:  0.0707
+  ECE:    0.0029
+2026-04-16 17:44:37 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260416_174437.png
+2026-04-16 17:44:37 | DEBUG | Accuracy: 0.881
+2026-04-16 17:44:38 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.24      0.22      0.23      4965
+      Repaid       0.93      0.94      0.94     56538
+
+    accuracy                           0.88     61503
+   macro avg       0.59      0.58      0.58     61503
+weighted avg       0.88      0.88      0.88     61503
+
+2026-04-16 17:44:38 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         1100       3865
+  Repaid            3443      53095
+2026-04-16 17:44:38 | DEBUG | Threshold 0.18 | Precision: 0.242  Recall: 0.222  F1: 0.231  BalAcc: 0.580
+2026-04-16 17:44:38 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:45:22 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.420
+  mean:   0.080
+  median: 0.068
+  >0.20:  3035
+  >0.30:  344
+  >0.40:  258
+  Brier:  0.0707
+  ECE:    0.0029
+2026-04-16 17:45:23 | DEBUG | Probability distribution plot saved: logs/Expert_prob_dist_20260416_174522.png
+2026-04-16 17:45:23 | DEBUG | Accuracy: 0.896
+2026-04-16 17:45:23 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.26      0.16      0.20      4965
+      Repaid       0.93      0.96      0.94     56538
+
+    accuracy                           0.90     61503
+   macro avg       0.59      0.56      0.57     61503
+weighted avg       0.87      0.90      0.88     61503
+
+2026-04-16 17:45:23 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted          791       4174
+  Repaid            2244      54294
+2026-04-16 17:45:24 | DEBUG | Threshold 0.20 | Precision: 0.261  Recall: 0.159  F1: 0.198  BalAcc: 0.560
+2026-04-16 17:45:24 | DEBUG | 
+=== Auto Model Threshold Sweep ===
+2026-04-16 17:45:24 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:46:29 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.436
+  mean:   0.080
+  median: 0.066
+  >0.20:  3308
+  >0.30:  714
+  >0.40:  225
+  Brier:  0.0702
+  ECE:    0.0023
+2026-04-16 17:46:29 | DEBUG | Probability distribution plot saved: logs/Auto_prob_dist_20260416_174629.png
+2026-04-16 17:46:29 | DEBUG | Accuracy: 0.377
+2026-04-16 17:46:29 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.10      0.89      0.19      4965
+      Repaid       0.97      0.33      0.50     56538
+
+    accuracy                           0.38     61503
+   macro avg       0.54      0.61      0.34     61503
+weighted avg       0.90      0.38      0.47     61503
+
+2026-04-16 17:46:30 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         4398        567
+  Repaid           37719      18819
+2026-04-16 17:46:30 | DEBUG | Threshold 0.04 | Precision: 0.104  Recall: 0.886  F1: 0.187  BalAcc: 0.609
+2026-04-16 17:46:30 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:47:37 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.436
+  mean:   0.080
+  median: 0.066
+  >0.20:  3308
+  >0.30:  714
+  >0.40:  225
+  Brier:  0.0702
+  ECE:    0.0023
+2026-04-16 17:47:37 | DEBUG | Probability distribution plot saved: logs/Auto_prob_dist_20260416_174737.png
+2026-04-16 17:47:37 | DEBUG | Accuracy: 0.529
+2026-04-16 17:47:37 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.12      0.79      0.21      4965
+      Repaid       0.96      0.51      0.66     56538
+
+    accuracy                           0.53     61503
+   macro avg       0.54      0.65      0.44     61503
+weighted avg       0.90      0.53      0.63     61503
+
+2026-04-16 17:47:38 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         3915       1050
+  Repaid           27948      28590
+2026-04-16 17:47:38 | DEBUG | Threshold 0.06 | Precision: 0.123  Recall: 0.789  F1: 0.213  BalAcc: 0.647
+2026-04-16 17:47:38 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:48:43 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.436
+  mean:   0.080
+  median: 0.066
+  >0.20:  3308
+  >0.30:  714
+  >0.40:  225
+  Brier:  0.0702
+  ECE:    0.0023
+2026-04-16 17:48:43 | DEBUG | Probability distribution plot saved: logs/Auto_prob_dist_20260416_174843.png
+2026-04-16 17:48:43 | DEBUG | Accuracy: 0.641
+2026-04-16 17:48:43 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.14      0.69      0.24      4965
+      Repaid       0.96      0.64      0.77     56538
+
+    accuracy                           0.64     61503
+   macro avg       0.55      0.66      0.50     61503
+weighted avg       0.89      0.64      0.72     61503
+
+2026-04-16 17:48:44 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         3436       1529
+  Repaid           20546      35992
+2026-04-16 17:48:44 | DEBUG | Threshold 0.08 | Precision: 0.143  Recall: 0.692  F1: 0.237  BalAcc: 0.664
+2026-04-16 17:48:44 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:49:49 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.436
+  mean:   0.080
+  median: 0.066
+  >0.20:  3308
+  >0.30:  714
+  >0.40:  225
+  Brier:  0.0702
+  ECE:    0.0023
+2026-04-16 17:49:49 | DEBUG | Probability distribution plot saved: logs/Auto_prob_dist_20260416_174949.png
+2026-04-16 17:49:49 | DEBUG | Accuracy: 0.790
+2026-04-16 17:49:50 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.19      0.47      0.27      4965
+      Repaid       0.95      0.82      0.88     56538
+
+    accuracy                           0.79     61503
+   macro avg       0.57      0.64      0.57     61503
+weighted avg       0.88      0.79      0.83     61503
+
+2026-04-16 17:49:50 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         2340       2625
+  Repaid           10305      46233
+2026-04-16 17:49:51 | DEBUG | Threshold 0.10 | Precision: 0.185  Recall: 0.471  F1: 0.266  BalAcc: 0.645
+2026-04-16 17:49:51 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:50:55 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.436
+  mean:   0.080
+  median: 0.066
+  >0.20:  3308
+  >0.30:  714
+  >0.40:  225
+  Brier:  0.0702
+  ECE:    0.0023
+2026-04-16 17:50:55 | DEBUG | Probability distribution plot saved: logs/Auto_prob_dist_20260416_175055.png
+2026-04-16 17:50:56 | DEBUG | Accuracy: 0.801
+2026-04-16 17:50:56 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.19      0.45      0.27      4965
+      Repaid       0.95      0.83      0.88     56538
+
+    accuracy                           0.80     61503
+   macro avg       0.57      0.64      0.58     61503
+weighted avg       0.88      0.80      0.83     61503
+
+2026-04-16 17:50:56 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         2230       2735
+  Repaid            9520      47018
+2026-04-16 17:50:57 | DEBUG | Threshold 0.12 | Precision: 0.190  Recall: 0.449  F1: 0.267  BalAcc: 0.640
+2026-04-16 17:50:57 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:52:03 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.436
+  mean:   0.080
+  median: 0.066
+  >0.20:  3308
+  >0.30:  714
+  >0.40:  225
+  Brier:  0.0702
+  ECE:    0.0023
+2026-04-16 17:52:03 | DEBUG | Probability distribution plot saved: logs/Auto_prob_dist_20260416_175203.png
+2026-04-16 17:52:03 | DEBUG | Accuracy: 0.838
+2026-04-16 17:52:03 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.21      0.37      0.27      4965
+      Repaid       0.94      0.88      0.91     56538
+
+    accuracy                           0.84     61503
+   macro avg       0.58      0.62      0.59     61503
+weighted avg       0.88      0.84      0.86     61503
+
+2026-04-16 17:52:04 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         1816       3149
+  Repaid            6820      49718
+2026-04-16 17:52:04 | DEBUG | Threshold 0.14 | Precision: 0.210  Recall: 0.366  F1: 0.267  BalAcc: 0.623
+2026-04-16 17:52:04 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:52:59 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.436
+  mean:   0.080
+  median: 0.066
+  >0.20:  3308
+  >0.30:  714
+  >0.40:  225
+  Brier:  0.0702
+  ECE:    0.0023
+2026-04-16 17:53:00 | DEBUG | Probability distribution plot saved: logs/Auto_prob_dist_20260416_175259.png
+2026-04-16 17:53:00 | DEBUG | Accuracy: 0.871
+2026-04-16 17:53:00 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.24      0.26      0.25      4965
+      Repaid       0.93      0.92      0.93     56538
+
+    accuracy                           0.87     61503
+   macro avg       0.59      0.59      0.59     61503
+weighted avg       0.88      0.87      0.87     61503
+
+2026-04-16 17:53:00 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         1314       3651
+  Repaid            4263      52275
+2026-04-16 17:53:00 | DEBUG | Threshold 0.16 | Precision: 0.236  Recall: 0.265  F1: 0.249  BalAcc: 0.595
+2026-04-16 17:53:00 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:53:46 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.436
+  mean:   0.080
+  median: 0.066
+  >0.20:  3308
+  >0.30:  714
+  >0.40:  225
+  Brier:  0.0702
+  ECE:    0.0023
+2026-04-16 17:53:47 | DEBUG | Probability distribution plot saved: logs/Auto_prob_dist_20260416_175347.png
+2026-04-16 17:53:47 | DEBUG | Accuracy: 0.883
+2026-04-16 17:53:47 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.24      0.22      0.23      4965
+      Repaid       0.93      0.94      0.94     56538
+
+    accuracy                           0.88     61503
+   macro avg       0.59      0.58      0.58     61503
+weighted avg       0.88      0.88      0.88     61503
+
+2026-04-16 17:53:47 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted         1086       3879
+  Repaid            3347      53191
+2026-04-16 17:53:47 | DEBUG | Threshold 0.18 | Precision: 0.245  Recall: 0.219  F1: 0.231  BalAcc: 0.580
+2026-04-16 17:53:47 | DEBUG | running predict test df rows, cols: (61503, 29)
+2026-04-16 17:54:36 | DEBUG | Predicted probability distribution:
+  min:    0.000
+  max:    0.436
+  mean:   0.080
+  median: 0.066
+  >0.20:  3308
+  >0.30:  714
+  >0.40:  225
+  Brier:  0.0702
+  ECE:    0.0023
+2026-04-16 17:54:36 | DEBUG | Probability distribution plot saved: logs/Auto_prob_dist_20260416_175436.png
+2026-04-16 17:54:36 | DEBUG | Accuracy: 0.894
+2026-04-16 17:54:36 | DEBUG | Classification Report:
+              precision    recall  f1-score   support
+
+   Defaulted       0.26      0.17      0.21      4965
+      Repaid       0.93      0.96      0.94     56538
+
+    accuracy                           0.89     61503
+   macro avg       0.60      0.57      0.58     61503
+weighted avg       0.88      0.89      0.88     61503
+
+2026-04-16 17:54:36 | DEBUG | Confusion Matrix (rows=actual, cols=predicted):
+                 Defaulted  Repaid
+  Defaulted          864       4101
+  Repaid            2444      54094
+2026-04-16 17:54:37 | DEBUG | Threshold 0.20 | Precision: 0.261  Recall: 0.174  F1: 0.209  BalAcc: 0.565
+2026-04-16 17:54:37 | INFO | Phase 3: complete. Pipeline finished.

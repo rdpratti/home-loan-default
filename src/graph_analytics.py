@@ -107,7 +107,7 @@ def build_graph(app_train: pd.DataFrame, logger) -> nx.Graph:
 
 # ─── 2. COMPUTE GRAPH FEATURES ───────────────────────────────────────────────
 
-def compute_graph_features(G: nx.Graph, app_train: pd.DataFrame, logger) -> pd.DataFrame:
+def compute_graph_features(G: nx.Graph, logger) -> pd.DataFrame:
     """
     Compute per-customer graph features:
 
@@ -117,6 +117,9 @@ def compute_graph_features(G: nx.Graph, app_train: pd.DataFrame, logger) -> pd.D
                                   (highly connected = unusual pattern)
         org_default_rate        : default rate of all customers in same org
         region_default_rate     : default rate of all customers in same region
+
+    All required customer data (SK_ID_CURR, defaulted flag) is read directly
+    from node attributes on *G* — no separate DataFrame is needed.
 
     Returns a DataFrame with SK_ID_CURR + graph feature columns.
     """
@@ -290,14 +293,14 @@ def plot_graph_feature_distributions(graph_df: pd.DataFrame,
         ax.set_ylabel('Count')
         ax.legend()
 
-    plt.suptitle('Graph Feature Distributions by LoanOutcome', fontsize=13)
-    plt.tight_layout()
+    fig.suptitle('Graph Feature Distributions by LoanOutcome', fontsize=13)
+    fig.tight_layout()
 
     Path('logs').mkdir(exist_ok=True)
     ts        = datetime.now().strftime('%Y%m%d_%H%M%S')
     plot_path = f'logs/graph_features_{ts}.png'
-    plt.savefig(plot_path)
-    plt.close()
+    fig.savefig(plot_path)
+    plt.close(fig)
     logger.debug(f"graph feature plot saved: {plot_path}")
 
 
@@ -307,9 +310,9 @@ def plot_subgraph(G: nx.Graph, sk_id_curr: int, logger, hops: int = 2):
     up to `hops` away. Useful for inspecting high-risk customers.
 
     Color coding:
-        Red    = Defaulted customer
-        Green  = Repaid customer
-        Blue   = Hub node (org/region/occupation)
+        Red (tomato)    = Defaulted customer
+        Blue (steelblue) = Repaid customer
+        Grey (lightgrey) = Hub node (org/region/occupation)
     """
     root = f"cust_{sk_id_curr}"
     if root not in G:
@@ -351,9 +354,9 @@ def plot_subgraph(G: nx.Graph, sk_id_curr: int, logger, hops: int = 2):
     Path('logs').mkdir(exist_ok=True)
     ts        = datetime.now().strftime('%Y%m%d_%H%M%S')
     plot_path = f'logs/subgraph_{sk_id_curr}_{ts}.png'
-    plt.tight_layout()
-    plt.savefig(plot_path)
-    plt.close()
+    fig.tight_layout()
+    fig.savefig(plot_path)
+    plt.close(fig)
     logger.debug(f"subgraph plot saved: {plot_path}")
 
 
@@ -378,7 +381,7 @@ def get_graph_summary(app_train: pd.DataFrame, logger) -> pd.DataFrame:
     logger.debug("get_graph_summary: starting graph analytics pipeline")
 
     G          = build_graph(app_train, logger)
-    graph_df   = compute_graph_features(G, app_train, logger)
+    graph_df   = compute_graph_features(G, logger)
 
     log_graph_diagnostics(graph_df, app_train, logger)
     plot_graph_feature_distributions(graph_df, app_train, logger)
